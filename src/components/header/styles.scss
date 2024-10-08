@@ -1,0 +1,119 @@
+@import "../../styles/variables/colors";
+@import "../../styles/variables/mixins";
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .header-left-col {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    svg{
+      font-size: 25px;
+      display: none;
+      color: white;
+      @include media(phone){
+       display: block;
+       
+      }
+    }
+    .logo {
+      // font-size: 34px;
+display: flex;
+      color: $primary-color;
+      img{
+        width: 150px;
+      }
+    }
+  }
+  .notification {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    svg {
+      font-size: 24px;
+      color: $primary-color;
+    }
+    .notif-count {
+      position: absolute;
+      top: 0%;
+      right: 0;
+      width: 12px;
+      height: 12px;
+      background-color: red;
+      border-radius: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 7px;
+      color: white;
+    }
+    a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+  .header-middle-col {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .header-right-col {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    justify-content: space-between;
+    .profile {
+      cursor: pointer;
+    }
+  }
+}
+
+/////list
+.notification-list-container {
+  display: flex;
+  align-items: start;
+  justify-content: start;
+  gap: 10px;
+  width: 200px;
+  .list-right-col {
+    line-height: 12px;
+    p {
+      font-size: 12px;
+      margin: 0%;
+    }
+    .time {
+      font-size: 10px;
+      color: #c9c2c2;
+    }
+  }
+}
+
+.user-profile-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  .user-profile {
+    width: 150px;
+    height: 150px;
+    background-color: azure;
+    border-radius: 100px;
+    object-fit: cover;
+    overflow: hidden;
+    img {
+      width: 100%;
+    }
+  }
+  .user-detail {
+    width: 100%;
+    .ant-select-single {
+      height: 38px;
+    }
+  }
+}

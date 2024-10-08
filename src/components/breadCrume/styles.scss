@@ -1,0 +1,32 @@
+.bread-crum-Container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .left-bread-crum {
+    width: auto;
+    h4 {
+      font-size: 24px;
+      color: black;
+    }
+  }
+  .right-bread-crum {
+    width: auto;
+    color: rgb(177, 177, 177);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    svg {
+      color: rgb(106, 105, 105);
+    }
+    a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgb(177, 177, 177);
+    }
+  }
+}

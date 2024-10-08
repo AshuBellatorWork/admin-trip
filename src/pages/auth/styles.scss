@@ -1,0 +1,163 @@
+@import "../../styles/variables/colors";
+@import "../../styles/variables/mixins";
+.login-container {
+  width: 100%;
+  background-color: #16283c;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .login-center-col {
+    width: 88%;
+    height: 80%;
+    margin: auto;
+    border-radius: 5px;
+    overflow: hidden;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    @include media(desktop) {
+      height: 98%;
+      width: 98%;
+    }
+    @include media(tablet) {
+      height: 98%;
+      width: 98%;
+    }
+    @include media(phone) {
+      height: 98%;
+      width: 98%;
+    }
+    // @include media(phone-tab-sm-lg-desktop) {
+    //   height: 98%;
+    //   // width: 98%;
+    // }
+
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    .login-center-left-col {
+      width: calc(50% - 100px);
+      padding: 10px 30px 30px 70px;
+      height: 100%;
+      @include media(desktop) {
+        padding: 10px;
+        width: auto;
+      }
+      @include media(phone) {
+        width: 100%;
+        padding: 10px;
+      }
+      @include media(tablet) {
+        width: auto;
+      }
+      @include media(phone-tab-sm-lg-desktop) {
+        width: auto;
+      }
+      .back-icon {
+        a {
+          text-decoration: none;
+          color: $primary-color;
+          font-size: 30px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+
+          span {
+            font-size: 14px;
+          }
+        }
+      }
+      .logo {
+        width: 100%;
+        font-size: 34px;
+        color: black;
+      }
+      .login-form-container {
+        width: 100%;
+        margin-top: 20px;
+        @include media(phone) {
+          margin-top: 0px;
+        }
+        .login-form-title {
+          width: 100%;
+          line-height: 28px;
+          font-family: sans-serif;
+          margin-bottom: 20px;
+          color: black;
+          h3 {
+            font-weight: bold;
+            font-size: 22px;
+          }
+          p {
+            font-size: 16px;
+            font-weight: 200;
+            color: $primary-color;
+          }
+        }
+        // .image-upload-container {
+        //   @include media(phone) {
+        //     width: 100%;
+        //     display: flex;
+        //     align-items: center;
+        //     justify-content: center;
+        //   }
+        // }
+      }
+    }
+    .login-center-right-col {
+      width: 50%;
+      @include media(phone) {
+        display: none;
+      }
+    }
+  }
+}
+
+.login-form {
+  .login-form-div {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 15px;
+    @include media(phone) {
+      gap: 8px;
+    }
+  }
+  .input-width {
+    width: 48%;
+    @include media(phone) {
+      width: 100%;
+    }
+  }
+  .input-widthfull {
+    width: 100%;
+  }
+  a {
+    color: $primary-color;
+  }
+  .ant-select-selector {
+    height: 38px !important;
+  }
+  label {
+    color: black;
+  }
+  input {
+    height: 38px;
+  }
+  .ant-form-item {
+    margin-bottom: 0px;
+    margin-top: 10px;
+  }
+  .form-submit-btn {
+    background-color: $primary-color;
+    width: 100%;
+    padding-block: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &:hover {
+      background-color: $primary-color !important;
+    }
+  }
+}

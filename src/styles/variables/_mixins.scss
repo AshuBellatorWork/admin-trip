@@ -1,0 +1,83 @@
+// MEDIA QUERIES WITH BREAKPOINTS
+@mixin media($breakpoint) {
+  @if $breakpoint==phone {
+    @media (max-width: 767px) {
+      @content;
+    }
+  }
+  @if $breakpoint==tablet {
+    @media (min-width: 768px) and (max-width: 1120px) {
+      @content;
+    }
+  }
+  @if $breakpoint==tablet-lg {
+    @media (max-width: 992px) {
+      @content;
+    }
+  }
+  @if $breakpoint==mini-desktop {
+    @media (min-width: 992px) {
+      @content;
+    }
+  }
+  @if $breakpoint==desktop {
+    @media (max-width: 1300px) {
+      @content;
+    }
+  }
+  @if $breakpoint==desktopupper {
+    @media (min-width: 1200px) {
+      @content;
+    }
+  }
+  @if $breakpoint==lg-desktop {
+    @media (min-width: 1400px) {
+      @content;
+    }
+  }
+  @if $breakpoint==xl-lg-desktop {
+    @media (min-width: 1600px) {
+      @content;
+    }
+  }
+  @if $breakpoint==tablet-sm-desktop {
+    @media (min-width: 768px) and (max-width: 991px) {
+      @content;
+    }
+  }
+  @if $breakpoint==phone-tab-sm-desktop {
+    @media (min-width: 0px) and (max-width: 991px) {
+      @content;
+    }
+  }
+  @if $breakpoint==phone-tab-sm-lg-desktop {
+    @media (min-width: 0px) and (max-width: 1199px) {
+      @content;
+    }
+  }
+  @if $breakpoint==tab-sm-lg-desktop {
+    @media (min-width: 768px) and (max-width: 1199px) {
+      @content;
+    }
+  }
+  @if $breakpoint==sm-lg-desktop {
+    @media (min-width: 992px) and (max-width: 1199px) {
+      @content;
+    }
+  }
+  @if $breakpoint==defaultdesktop {
+    @media (max-width: 1365px) {
+      @content;
+    }
+  }
+  @if $breakpoint==tab-defaultdesktop {
+    @media (min-width: 768px) and (max-width: 1365px) {
+      @content;
+    }
+  }
+  @if $breakpoint==tab-sm-lg-desktop-plus {
+    @media (min-width: 768px) and (max-width: 1439px) {
+      @content;
+    }
+  }
+}

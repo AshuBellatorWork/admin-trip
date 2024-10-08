@@ -1,0 +1,26 @@
+@import "../../styles/variables/colors";
+
+.ant-modal-content {
+  padding: 0% !important;
+  .ant-modal-close {
+    top: 10px;
+    color: white;
+  }
+  .ant-modal-header {
+    padding: 10px 0px 10px 20px;
+    background-color: $primary-color;
+    .ant-modal-title {
+      color: white;
+    }
+  }
+  .ant-modal-body {
+    padding: 20px 24px;
+  }
+}
+
+.model-comp{
+  width: 1100px !important;
+  .ant-modal-body {
+    // padding: 20px 24px;
+  }
+}

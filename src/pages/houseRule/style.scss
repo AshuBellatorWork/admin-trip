@@ -1,0 +1,41 @@
+.time {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  .text-editor{
+    width: 49%;
+    overflow: hidden;
+    // background-color: darkblue;
+
+  }
+  .check-in{
+    width: 100%;
+    // .text-editor input{
+      border: none !important;
+      outline: none;
+      // }
+  }
+}
+.crib-policy {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  gap: 20px;
+
+  .title {
+    color: black;
+  }
+
+  .crib-sec{
+     display: flex;
+    //  justify-content: space-between;
+     flex-wrap: wrap;
+     flex-direction: row;
+     gap: 2%;
+
+     input{
+        width: 49%;
+     }
+ 
+  }
+}

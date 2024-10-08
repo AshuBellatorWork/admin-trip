@@ -1,0 +1,14 @@
+.secondary-btn {
+  color: #cf1322;
+  background: #fff1f0;
+  border-color: #ffa39e;
+  .ant-btn-default {
+    color: #cf1322;
+
+    &:hover {
+      color: #cf1322;
+      background: #fff1f0;
+      border-color: #ffa39e;
+    }
+  }
+}

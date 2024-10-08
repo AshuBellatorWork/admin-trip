@@ -1,0 +1,38 @@
+@import "../../styles/variables/colors";
+.sider-menu {
+  // background-color: white !important;
+
+  .ant-menu-submenu-title {
+    background: white;
+    color: #a8a6b2;
+  }
+  .ant-menu-item {
+    color: #a8a6b2;
+    // .ant-menu-item-icon {
+    //   color: $primary-color;
+    // }
+    a {
+      color: #a8a6b2;
+    }
+  }
+  .ant-menu-item-selected {
+    
+    background: #f0effc;
+    color: $primary-color;
+
+    a {
+      background: #f0effc;
+      color: $primary-color;
+    }
+  }
+  .ant-menu-sub {
+    .ant-menu-item {
+      padding-left: 30px !important;
+    }
+    .ant-menu-inline {
+      background: white !important;
+    }
+  }
+  .ant-menu-submenu-selected {
+  }
+}

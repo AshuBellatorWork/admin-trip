@@ -1,0 +1,61 @@
+@import "../../../styles/variables/colors";
+
+.add-course-details-con {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+.add-course-left-col{
+  width: 50%;
+}
+.add-course-right-col{
+  width: 50%;
+
+  .course-content-sec{
+
+    .heading{
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+}
+ 
+  .title {
+    font-size: 16px;
+    color: #282828;
+    margin-bottom: 10px;
+  }
+
+  .input-field {
+    margin-bottom: 10px;
+   
+  }
+  .input-label {
+    margin-bottom: 4px;
+    display: block;
+    color: rgba(0, 0, 0, 0.88);
+  }
+
+  .add-learn-input {
+    width: 100% !important;
+  }
+  .add-Course-Content-input {
+    width: 100%;
+  }
+}
+.items-input{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-block:10px
+}
+.btn-submit-course-details {
+  background-color: $primary-color;
+  color: white;
+
+  &:hover {
+    border: none;
+    outline: none;
+    box-shadow: none;
+  }
+}

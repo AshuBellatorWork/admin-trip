@@ -1,0 +1,41 @@
+.add-team-member-form {
+  .input-field {
+    .ant-form-item-row {
+      .ant-picker{
+        width: 100%;
+      }
+      .ant-form-item-label {
+        padding: 0;
+      }
+    }
+  }
+
+  .member-img-upload {
+    .ant-upload-drag {
+      &:hover {
+        border-color: rgb(110, 97, 228);
+      }
+    }
+
+    .ant-upload-list-picture-card {
+      display: flex;
+      justify-content: center;
+    }
+
+    .ant-upload-select {
+      margin: 0 !important;
+
+      &:hover {
+        border-color: rgb(110, 97, 228) !important;
+      }
+
+      .ant-upload {
+        flex-direction: column;
+      }
+      .icon-upload {
+        font-size: 25px;
+        color: rgb(110, 97, 228);
+      }
+    }
+  }
+}

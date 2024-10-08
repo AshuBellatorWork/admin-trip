@@ -1,0 +1,45 @@
+@import "../../styles/variables/mixins";
+
+.image-uploader {
+  .ant-upload-selec {
+    border-radius: 100% !important;
+  }
+  .ant-upload-picture-card-wrapper {
+    display: contents !important;
+  }
+  .ant-upload-list-item {
+    border-radius: 100% !important;
+    padding: 0px !important;
+    overflow: hidden !important;
+  }
+  .ant-upload {
+    border-radius: 100% !important;
+  }
+  .ant-upload-list-item-thumbnail {
+    img {
+      object-fit: none !important;
+    }
+  }
+  .ant-upload-list-picture-card {
+    overflow: hidden !important;
+    @include media(phone) {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+  .ant-upload-list-item-error {
+    border-color: none !important;
+  }
+  .ant-upload-select {
+    overflow: hidden !important;
+  }
+  .ant-upload-list-item::before {
+    width: 100% !important;
+    height: 100% !important;
+  }
+  //   .ant-upload-list-item-container {
+  //     width: 100% !important;
+  //     height: 100% !important;
+  //   }
+}

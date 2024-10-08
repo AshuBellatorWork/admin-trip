@@ -1,0 +1,21 @@
+@import "../../styles/variables/colors";
+
+.header-search {
+  .ant-input {
+    &:hover {
+      border-color: $primary-color;
+      box-shadow: none;
+    }
+    &:focus {
+      border-color: $primary-color;
+      box-shadow: none;
+    }
+  }
+  .ant-input-search-button {
+    background: $primary-color;
+
+    &:hover {
+      background-color: $primary-color !important;
+    }
+  }
+}

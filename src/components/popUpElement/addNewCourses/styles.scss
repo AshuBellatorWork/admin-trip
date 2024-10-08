@@ -1,0 +1,18 @@
+@import "../../../styles/variables/colors";
+
+.add-courses-form {
+  .ant-form-item-control-input-content {
+    width: 100%;
+    text-align: right;
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    .form-submit-btn {
+      background-color: $primary-color;
+      padding-block: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}
