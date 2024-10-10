@@ -1,9 +1,10 @@
-import { createApi } from "@reduxjs/toolkit/query/react";
-import { dynamicBaseQuery } from "./BadRequestHandler/BadRequestHandler";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+// import { dynamicBaseQuery } from "./BadRequestHandler/BadRequestHandler";
 
 export const getCategory = createApi({
   reducerPath: "category2",
-  baseQuery: dynamicBaseQuery,
+  // baseQuery: dynamicBaseQuery,
+  baseQuery: fetchBaseQuery({ baseUrl: 'http://127.0.0.1:8000/' }),
   endpoints: (builder) => ({
     getCategory: builder.query({
       query: () => ({
@@ -35,7 +36,14 @@ export const getCategory = createApi({
         }), 
       invalidatesTags:["category"]
     }),
+
+    getCat: builder.query({
+      query: () => ({
+        url: '/api/inquiry',  
+        method: 'GET',
+      }),
+    }),
   }),
 });
 
-export const { useGetCategoryQuery, useAddCategoryMutation, useEditCategoryMutation, useDeleteCategoryMutation } = getCategory;
+export const { useGetCategoryQuery, useAddCategoryMutation, useEditCategoryMutation, useDeleteCategoryMutation, useGetCatQuery } = getCategory;

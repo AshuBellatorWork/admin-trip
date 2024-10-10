@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { loginAuth } from "./services/login";
-import {  getCategory } from "./services/category";
+import { getCategory } from "./services/category";
 import { getTourPackages } from "./services/tourPackages";
 import { favTour } from "./services/fav";
 import { packageDetail } from "./services/addTourDetail";
@@ -10,6 +10,8 @@ import { getFeedback } from "./services/feedback";
 import { getDashboard } from "./services/dashBoard";
 import { enquiryList } from "./services/enquiryList";
 import { getItinerary } from "./services/itinerary";
+import { packaged } from "./services/package";
+import { inquiry } from "./services/inquiry";
 
 export const store = configureStore({
   reducer: {
@@ -24,6 +26,8 @@ export const store = configureStore({
     [getDashboard.reducerPath]: getDashboard.reducer,
     [enquiryList.reducerPath]: enquiryList.reducer,
     [getItinerary.reducerPath]: getItinerary.reducer,
+    [packaged.reducerPath]: packaged.reducer,
+    [inquiry.reducerPath]: inquiry.reducer,
   },
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.
@@ -39,6 +43,8 @@ export const store = configureStore({
       .concat(enquiryList.middleware)
       .concat(getDashboard.middleware)
       .concat(getItinerary.middleware)
+      .concat(packaged.middleware)
+      .concat(inquiry.middleware),
 });
 
 // optional, but required for refetchOnFocus/refetchOnReconnect behaviors
