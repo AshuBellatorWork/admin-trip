@@ -1,7 +1,6 @@
 import { Button, Table, Tag, message, Spin } from "antd";
 import { useEffect, useState } from "react";
 import { useDeleteCategoryMutation,  useGetCatQuery,} from "../../store/services/category";
-import Pagination from "../../components/pagination/Index"; // Assuming this is your pagination component
 import { RiDeleteBinLine } from "react-icons/ri";
 import { FaRegEdit } from "react-icons/fa";
 import AreYouSure from "../../components/popUpElement/areYouSure";
@@ -25,8 +24,6 @@ const Category = () => {
 
   // Fetch categories
   const { data: getCategory, isLoading, isError } = useGetCatQuery();
-  console.log(getCategory);
-  // const { data: categoriesData } = useGetCatQuery();
   // Handle delete action
   const [triggerDelete, { data: categoryDeleteResponse }] =
     useDeleteCategoryMutation();

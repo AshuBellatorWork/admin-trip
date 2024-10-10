@@ -10,6 +10,8 @@ import AddTourPackages from "../../components/popUpElement/tourPakcages/AddTourP
 // import { useGetTourPackagesQuery } from "../../store/services/tourPackages";
 import EditTourPackages from "../../components/popUpElement/tourPakcages/EditTourPackages";
 import { useDeletePackageMutation, useDeleteTourPackageMutation, useGetTourCategoryQuery } from "../../store/services/tourPackages";
+import { useGetPackagesQuery } from "../../store/services/package";
+
 import { Link } from "react-router-dom";
 import "./style.scss";
 import Loader from '../../components/loader/Loader';
@@ -75,7 +77,7 @@ const Packages = () => {
   ];
 
 
-  const { data: getTourPackages } = useGetTourCategoryQuery()
+  const { data: getTourPackages } = useGetPackagesQuery();
 
   const dataSource = getTourPackages?.data?.map((item, index) => {
     return {
@@ -89,12 +91,14 @@ const Packages = () => {
           src={item?.images}
         />
       ),
-      packageName: <Link to={`https://tripatours.com/tour-detail/${item?._id}`}>{item.name}</Link>,
-      category: item.categoryName,
+      packageName: (
+        <Link to={`https://tripatours.com/tour-detail/${item?._id}`}>
+          {item.name}
+        </Link>
+      ),
+      category: item.category.name,
       Action: (
         <div style={{ display: "flex", alignItems: "center" }}>
-
-
           <Link to={`/itinerary/${item?._id}`}>
             <Tag color={geekblue} className="cursor-pointor">
               <FaRoute />
@@ -106,26 +110,23 @@ const Packages = () => {
           </Tag>
             </Link> */}
           <Link to={`/edit-package-detail/${item?._id}`}>
-            <Tag color={geekblue} className="cursor-pointor "
-            >
+            <Tag color={geekblue} className="cursor-pointor ">
               <FaRegEdit />
             </Tag>
           </Link>
-          <Tag color={redTag} className="cursor-pointor "
+          <Tag
+            color={redTag}
+            className="cursor-pointor "
             onClick={() => {
-              showModal(item, 2)
-
-            }}>
+              showModal(item, 2);
+            }}
+          >
             <RiDeleteBinLine />
           </Tag>
         </div>
       ),
     };
   });
-
-  // useEffect(() => {
-  //   triggerHandler(paginationData);
-  // }, [paginationData?.index]);
 
   useEffect(() => {
     if (data?.totalPages) {

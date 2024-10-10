@@ -40,11 +40,7 @@ const EnquiryList = () => {
     COMPLETED: "APPROVED",
     CANCELLED: "REJECTED"
   }
-  // const checkStatus2 = {
-  //     "IN PROCESS":"IN PROCESS",
-  //     APPROVED:"APPROVED",
-  //     REJECTED:"REJECTED"
-  // }
+
 
   const checkStatusColor = {
     "IN PROCESS": "yellow",
