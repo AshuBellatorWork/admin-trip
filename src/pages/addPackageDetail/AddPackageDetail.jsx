@@ -137,10 +137,7 @@ const AddPackageDetail = () => {
           </div>
           <div className="text-editor">
             <h3 className="title">Name</h3>
-            <Input
-              type="text"
-              style={{ width: "100%", color: "" }}
-              onChange={(e) => handleChange("name", e.target.value)}
+            <Input type="text" style={{ width: "100%", color: "" }} onChange={(e) => handleChange("name", e.target.value)}
             />
           </div>
           <div className="text-editor-num2">

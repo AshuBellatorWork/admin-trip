@@ -7,6 +7,7 @@ import Loader from "../../components/loader/Loader";
 import { useGetPackagesQuery } from "../../store/services/package";
 import { useGetInquiryQuery } from "../../store/services/inquiry";
 import { useGetCatQuery } from "../../store/services/category"; 
+import { useGetDesertExtremeInquiryQuery } from "../../store/services/desertExtremeInquiry"; 
 
 
 
@@ -15,10 +16,11 @@ const Dashboard = () => {
   const [totalBuggyPackages, setTotalBuggyPackages] = useState(0);
   const [totalSafariPackages, setTotalSafariPackages] = useState(0);
   const [totalInquiries, setTotalInquiries] = useState(0);
-  const [totalCompledInquiries, setTotalCompledInquiries] = useState(0);
+  const [totalCompletedInquiries, setTotalCompletedInquiries] = useState(0);
   const [totalCancelledInquiries, setTotalCancelledInquiries] = useState(0);
   const [totalInprocessInquiries, setTotalInprocessInquiries] = useState(0);
   const [totalActivities, setTotalActivities] = useState(0);
+  const [totalDesertInquiries, setTotalDesertInquiries] = useState(0);
 
   const { data: dashboardData, isLoading: isDashboardLoading } = useGetDashboardQuery(date);
   const dashBoardData = dashboardData?.data;
@@ -26,6 +28,7 @@ const Dashboard = () => {
   const { data: packagesData } = useGetPackagesQuery();
   const { data: inquiriesData } = useGetInquiryQuery();
   const { data: categoriesData } = useGetCatQuery();
+  const { data: desertInqiryData } = useGetDesertExtremeInquiryQuery();
   // Log packagesData using useEffect to avoid re-render issues
   useEffect(() => {
     if (packagesData) {
@@ -45,8 +48,9 @@ const Dashboard = () => {
       setTotalInquiries(totalinquiry);
 
       const totalcompletedinquiry = inquiriesData.data.filter(
-        (inquiryItem) => inquiryItem.status == 1).length;
-      setTotalCompledInquiries(totalcompletedinquiry);
+        (inquiryItem) => inquiryItem.status == 1
+      ).length;
+      setTotalCompletedInquiries(totalcompletedinquiry);
 
       const totalcancelledinquiry = inquiriesData.data.filter(
         (inquiryItem) => inquiryItem.status == 2
@@ -57,15 +61,18 @@ const Dashboard = () => {
         (inquiryItem) => inquiryItem.status == 0
       ).length;
       setTotalInprocessInquiries(totalinprocessinquiry);
-
     }
 
-    if(categoriesData) {
+    if (categoriesData) {
       const totalactivity = categoriesData?.data?.length || 0;
       setTotalActivities(totalactivity);
     }
 
-  }, [packagesData, inquiriesData, categoriesData]); // Added inquiriesData as dependency
+    if (desertInqiryData) {
+      const totaldesrtinquiry = desertInqiryData?.data?.length || 0;
+      setTotalDesertInquiries(totaldesrtinquiry);
+    }
+  }, [packagesData, inquiriesData, categoriesData, desertInqiryData]); // Added inquiriesData as dependency
 
   const onChange = (date, dateString) => {
     setDate(dateString);
@@ -98,7 +105,7 @@ const Dashboard = () => {
             <Card name={"Total Enquiries"} value={totalInquiries} />
             <Card
               name={"Total Completed Enquiries"}
-              value={totalCompledInquiries}
+              value={totalCompletedInquiries}
             />
             <Card
               name={"Total Cancelled Enquiries"}
@@ -114,11 +121,10 @@ const Dashboard = () => {
             />
             <Card
               name={"Total Desert Enquiries"}
-              value={dashBoardData?.totalDesertEnquiries}
+              value={totalDesertInquiries}
             />
           </div>
         </>
-        
       )}
     </>
   );

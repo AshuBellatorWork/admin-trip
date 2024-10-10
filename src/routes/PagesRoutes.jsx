@@ -17,3 +17,4 @@ export const clientFeedback = "/client-feedback";
 export const enquiryList = "/enquiry-list";
 export const itinerary = "/itinerary/:id";
 export const signUp = "/sign-up";
+export const showCategory = "/category-details";
