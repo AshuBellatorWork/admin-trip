@@ -4,7 +4,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const getCategory = createApi({
   reducerPath: "category2",
   // baseQuery: dynamicBaseQuery,
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://127.0.0.1:8000/' }),
+  baseQuery: fetchBaseQuery({ baseUrl: 'http://127.0.0.1:8000' }),
   endpoints: (builder) => ({
     getCategory: builder.query({
       query: () => ({
@@ -15,7 +15,7 @@ export const getCategory = createApi({
     }),
     addCategory: builder.mutation({
       query: (body) => ({
-        url: "/category/addCategory",
+        url: "api/category/addCategory",
         method: "POST",
         body,
       }),
@@ -23,7 +23,7 @@ export const getCategory = createApi({
     }),
     editCategory: builder.mutation({
       query: (body) => ({
-        url: `/category/updateCategory/${body.id}`,
+        url: `api/category/updateCategory/${body.id}`,
         method: "PUT",
         body:body.data
       }),
@@ -31,7 +31,7 @@ export const getCategory = createApi({
     }),
     deleteCategory: builder.mutation({
       query: (body) => ({
-        url: `/category/deleteCategory/${body.id}`,
+        url: `/api/category/deleteCategory/${body.id}`,
         method: "DELETE",
         }), 
       invalidatesTags:["category"]
@@ -39,7 +39,7 @@ export const getCategory = createApi({
 
     getCat: builder.query({
       query: () => ({
-        url: '/api/inquiry',  
+        url: '/api/category',  
         method: 'GET',
       }),
     }),

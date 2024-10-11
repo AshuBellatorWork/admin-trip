@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { Select, Space, Table, Tag } from 'antd';
 import { useEnquiryListQuery, useUpdateStatusMutation } from "../../store/services/enquiryList"
+import { useGetInquiryQuery } from "../../store/services/inquiry"; 
 import Loader from '../../components/loader/Loader';
 
 const EnquiryList = () => {
   const [searchText, setSearchText] = useState("")
   const [status, setStatus] = useState()
   const [filter, setFilter] = useState("")
-  const { data: enquiryListDara,isLoading } = useEnquiryListQuery({ page: 1, status: filter })
+  // const { data: enquiryListDara,isLoading } = useEnquiryListQuery({ page: 1, status: filter })
+  const { data: inquiriesData, isLoading, isError } = useGetInquiryQuery();
+  console.log(inquiriesData);
   const [trigger, { data: updateStatusData }] = useUpdateStatusMutation()
-  console.log(filter)
+  // console.log(filter)
   const option = [{
     value: "IN PROCESS",
     label: "IN PROCESS"
@@ -41,13 +44,11 @@ const EnquiryList = () => {
     CANCELLED: "REJECTED"
   }
 
-
   const checkStatusColor = {
-    "IN PROCESS": "yellow",
-    COMPLETED: "green",
-    CANCELLED: "red"
+    0: "yellow",
+    1: "green",
+    2: "red"
   }
-
 
   const Columns = [
     {
@@ -66,15 +67,12 @@ const EnquiryList = () => {
           String(record.status.props.children).toLowerCase().includes(value.toLowerCase())
         )
       }
-
     },
     {
       title: "Full Name",
       dataIndex: "name",
       key: "name",
     },
-
-
     {
       title: "Email",
       dataIndex: "email",
@@ -95,18 +93,6 @@ const EnquiryList = () => {
       dataIndex: "peopleInfo",
       key: "peopleInfo",
     },
-    // {
-    //   title: "Check In",
-    //   dataIndex: "createdAt",
-    //   key: "createdAt",
-    //   },
-    //   {
-    //     title: "Check Out",
-    //     dataIndex: "updatedAt",
-    //     key: "updatedAt",
-    //     },
-
-
     {
       title: "Message",
       dataIndex: "message",
@@ -123,22 +109,41 @@ const EnquiryList = () => {
       key: "Action",
     },
   ];
-  const data = enquiryListDara?.data?.map((item, index) => {
+  const data = inquiriesData?.data?.map((item, index) => {
     return {
-      key: item.fullName,
-
+      key: item._id,
       Sno: index + 1,
       name: item?.fullName,
       email: item?.email,
       phone: item?.phone_number,
-      packageName: item?.packageName,
-      status: <p style={{ whiteSpace: "nowrap", padding: "5px", borderRadius: "5px", textAlign: "center", color: checkStatusColor[item?.status] == "yellow" ? "black" : "white", background: checkStatusColor[item?.status] }}>{checkStatus[item?.status]}</p>,
+      packageName: item?.package.name,
+      status: (
+        <p
+          style={{
+            whiteSpace: "nowrap",
+            padding: "5px",
+            borderRadius: "5px",
+            textAlign: "center",
+            color:
+              checkStatusColor[item?.status] == "yellow" ? "black" : "white",
+            background: checkStatusColor[item?.status],
+          }}
+        >
+          {checkStatus[item?.status]}
+        </p>
+      ),
       peopleInfo: item?.peopleInfo,
       message: item?.message,
-      Action: <Select options={option} value={checkStatus[item?.status]} style={{ width: "120px" }} onChange={(e) => setStatus({ value: e, id: item?._id })} />,
-
-    }
-  })
+      Action: (
+        <Select
+          options={option}
+          value={checkStatus[item?.status]}
+          style={{ width: "120px" }}
+          onChange={(e) => setStatus({ value: e, id: item?._id })}
+        />
+      ),
+    };
+  });
 
 
   useEffect(() => {
