@@ -79,6 +79,7 @@ const Packages = () => {
 
 
   const { data: getTourPackages } = useGetPackagesQuery();
+  // console.log(getTourPackages);
 
   const dataSource = getTourPackages?.data?.map((item, index) => {
     return {

@@ -42,8 +42,8 @@ export const packageDetail = createApi({
     }),
     updatePackagesDetail: builder.mutation({
       query: (body) => ({
-        url: `/package/updatePackages/${body.id}`,
-        method: "PUT",
+        url: `api/package/updatePackages/${body.id}`,
+        method: "POST",
         body:body.data
       }),
       invalidatesTags:["category"]
