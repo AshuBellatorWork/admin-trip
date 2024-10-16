@@ -10,7 +10,23 @@ export const packaged = createApi({
         method: 'GET',
       }),
     }),
+    addPackage: builder.mutation({
+      query: (body) => ({
+        url: "api/package/addPackage",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags:["package"]
+    }),
+
+    deletePackage: builder.mutation({
+      query: (body) => ({
+        url: `/api/package/deletePackage/${body.id}`,
+        method: "DELETE",
+        }), 
+      invalidatesTags:["package"]
+    }),
   }),
 });
 
-export const { useGetPackagesQuery } = packaged;
+export const { useGetPackagesQuery , useAddPackageMutation, useDeletePackageMutation } = packaged;

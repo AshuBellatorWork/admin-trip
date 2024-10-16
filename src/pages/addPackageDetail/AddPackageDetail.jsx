@@ -1,43 +1,41 @@
 import { useState, useEffect } from "react";
-import { useAddPackageDetailMutation } from "../../store/services/addTourDetail";
+// import { useAddPackageDetailMutation } from "../../store/services/addTourDetail";
+import { useGetItenaryQuery } from "../../store/services/itinerary";
 import { Editor } from "primereact/editor";
 import "./styles.scss";
 import { useNavigate } from "react-router-dom";
 import UploadTripImg from "./uploadTripImg";
 import { useGetTourCategoryQuery } from "../../store/services/tourPackages";
-import { Button, Input, Select, message } from "antd";
-import { BreadCrum } from "../../components/breadCrume";
-import { useParams } from "react-router-dom";
+import { Button, Input, Select, message, Checkbox, Col, Row } from "antd";
+// import { BreadCrum } from "../../components/breadCrume";
 import Loader from "../../components/loader/Loader";
+import { useGetPackagesQuery, useAddPackageMutation } from "../../store/services/package"; 
+// import { useAddPackageMutation } from "../../store/services/package"; //
 
-import { useGetCategoryQuery } from "../../store/services/category";
-
-import { Checkbox, Col, Row } from "antd";
 const AddPackageDetail = () => {
   const [fileList, setFileList] = useState([]);
   const [fileList2, setFileList2] = useState([]);
   const [editorData, setEditorData] = useState({
-    categoryId: "",
+    category_id: "",
     name: "",
-    highlights: "",
-    needToKnow: "",
-    canclePolicy: "",
-    inclusions: "",
-    DNSchedule: "",
-    packagesNight: "",
+    highlight: "",
+    need_to_know: "",
+    cancel_policy: "",
+    inclusion: "",
+    package_duration: "",
+    package_night: "",
     star: "",
-    info: "",
+    info: [],
     description: "",
-    shortDescription: "",
+    short_description: "",
     location: "",
     price: "",
-    discountPrice: "",
+    discounted_price: "",
     map: "",
-
     galleryPhoto: [],
   });
 
-  const [triggre, { data: addData, isLoading }] = useAddPackageDetailMutation();
+  const [triggre, { data: addData, isLoading }] = useAddPackageMutation();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -45,101 +43,86 @@ const AddPackageDetail = () => {
       message.success(addData.message);
       navigate("/package"); // Redirect on success
     }
-  }, [addData]);
+  }, [addData, navigate]);
 
-  const { data: packagesData } = useGetCategoryQuery();
+  const { data: itineraryData = {}, isLoading: loadingItinerary } = useGetItenaryQuery();
+  const { data: packagesData } = useGetTourCategoryQuery();
+  const { data: categories = {}, isLoading: loadingCategories } =
+    useGetPackagesQuery();
+  // console.log(categories);
 
   const handleChange = (name, value) => {
-    setEditorData((prev) => {
-      return {
-        ...prev,
-        [name]: value,
-      };
-    });
+    setEditorData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const submitHandler = () => {
     if (!fileList2[0]?.originFileObj) {
-      return message.error("plz add package images ");
+      return message.error("Please add package images.");
     } else if (fileList.length < 5) {
-      return message.error("plz add min five images ");
+      return message.error("Please add at least five images.");
     } else {
       const formData = new FormData();
-
-      formData.append("highlights", editorData.highlights);
-      formData.append("name", editorData.name);
-      formData.append("DNSchedule", editorData.DNSchedule);
-      formData.append("packagesNight", editorData.packagesNight);
-      formData.append("star", editorData.star);
-      formData.append("info", editorData.info);
-      formData.append("description", editorData.description);
-      formData.append("shortDescription", editorData.shortDescription);
-      formData.append("location", editorData.location);
-      formData.append("price", editorData.price);
-      formData.append("map", editorData.map);
-      formData.append("needToKnow", editorData.needToKnow);
-      formData.append("canclePolicy", editorData.canclePolicy);
-      formData.append("inclusions", editorData.inclusions);
-      formData.append("image", fileList2[0].originFileObj);
-      formData.append("categoryId", editorData.categoryId);
-      formData.append("discountPrice", editorData.discountPrice);
-      fileList.map((item) =>
-        formData.append("galleryPhoto", item.originFileObj)
+      Object.entries(editorData).forEach(([key, value]) => {
+        formData.append(key, value);
+      });
+      fileList.forEach((item) =>
+        formData.append("galleryPhoto[]", item.originFileObj)
       );
+      formData.append("image", fileList2[0].originFileObj);
       triggre(formData);
     }
   };
 
-  const packageLists = packagesData?.data?.map((elm) => {
-    return { value: elm?._id, label: elm?.name };
-  });
   const starOption = [
-    {
-      value: "1",
-      label: "1",
-    },
-    {
-      value: "2",
-      label: "2",
-    },
-    {
-      value: "3",
-      label: "3",
-    },
-    {
-      value: "4",
-      label: "4",
-    },
-    {
-      value: "5",
-      label: "5",
-    },
+    { value: "1", label: "1" },
+    { value: "2", label: "2" },
+    { value: "3", label: "3" },
+    { value: "4", label: "4" },
+    { value: "5", label: "5" },
   ];
-  const onChange = (checkedValues) => {
-    setEditorData((prev) => {
-      return {
-        ...prev,
-        info: checkedValues,
-      };
-    });
-  };
 
+  const onChange = (checkedValues) => {
+    setEditorData((prev) => ({
+      ...prev,
+      info: checkedValues,
+    }));
+  };
   return (
     <>
-      {isLoading ? (
+      {isLoading || loadingCategories || loadingItinerary ? (
         <Loader />
       ) : (
         <div className="text-editor-wrapper">
-          {/* <BreadCrum name={'Add Package'} /> */}
           <div className="add-package">
             <p>Add Package</p>
-            {/* <hr /> */}
           </div>
           <div className="text-editor">
             <h3 className="title">Name</h3>
-            <Input type="text" style={{ width: "100%", color: "" }} onChange={(e) => handleChange("name", e.target.value)}
+            <Input
+              type="text"
+              style={{ width: "100%" }}
+              onChange={(e) => handleChange("name", e.target.value)}
             />
           </div>
+          <div className="text-editor">
+            <h3 className="title">Categories</h3>
+            <Select
+              mode="multiple"
+              style={{ width: "100%" }}
+              placeholder="Select categories"
+              onChange={(values) => handleChange("category_id", values)}
+            >
+              {categories?.data?.map((category) => (
+                <Select.Option key={category.id} value={category.id}>
+                  {category.name}
+                </Select.Option>
+              ))}
+            </Select>
+          </div>
+
           <div className="text-editor-num2">
             <div className="text-editor">
               <h3 className="title">Packages Night</h3>
@@ -152,19 +135,13 @@ const AddPackageDetail = () => {
                   outline: "none",
                   border: "1px solid #ccc",
                 }}
-                onChange={(e) => handleChange("packagesNight", e.target.value)}
+                onChange={(e) => handleChange("package_night", e.target.value)}
               >
-                <option value="0">0</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
+                {Array.from({ length: 11 }, (_, i) => (
+                  <option key={i} value={i}>
+                    {i}
+                  </option>
+                ))}
               </select>
             </div>
             <div className="text-editor">
@@ -185,49 +162,25 @@ const AddPackageDetail = () => {
               rows="4"
               cols="50"
               style={{ width: "100%" }}
-              onChange={(e) => handleChange("DNSchedule", e.target.value)}
+              onChange={(e) => handleChange("package_duration", e.target.value)}
             />
           </div>
 
           <div className="text-editor">
-            <h3 className="title">info</h3>
-            <Checkbox.Group
-              style={{
-                width: "100%",
-              }}
-              onChange={onChange}
-            >
+            <h3 className="title">Info</h3>
+            <Checkbox.Group style={{ width: "100%" }} onChange={onChange}>
               <Row>
-                <Col span={8}>
-                  <Checkbox value="Meals">Meals</Checkbox>
-                </Col>
-                <Col span={8}>
-                  <Checkbox value="Sightseeing">Sightseeing</Checkbox>
-                </Col>
-                <Col span={8}>
-                  <Checkbox value="Cab">Cab</Checkbox>
-                </Col>
-                <Col span={8}>
-                  <Checkbox value="Camel Ride">Camel Ride</Checkbox>
-                </Col>
-                <Col span={8}>
-                  <Checkbox value="Quad Bike Ride">Quad Bike Ride</Checkbox>
-                </Col>
-                <Col span={8}>
-                  <Checkbox value="Sand Boarding">Sand Boarding</Checkbox>
-                </Col>
-                <Col span={8}>
-                  <Checkbox value="5 Star">5 Star</Checkbox>
-                </Col>
-                <Col span={8}>
-                  <Checkbox value="Cab Transfer">Cab Transfer</Checkbox>
-                </Col>
-                <Col span={8}>
-                  <Checkbox value="Buggy Ride">Buggy Ride</Checkbox>
-                </Col>
+                {itineraryData.data?.map((itenary) => (
+                  <Col span={8} key={itenary.id}>
+                    {" "}
+                    {/* Use unique id */}
+                    <Checkbox value={itenary.id}>{itenary.name}</Checkbox>
+                  </Col>
+                ))}
               </Row>
             </Checkbox.Group>
           </div>
+
           <div className="text-editor">
             <h3 className="title">Description</h3>
             <textarea
@@ -247,15 +200,17 @@ const AddPackageDetail = () => {
               rows="4"
               cols="50"
               style={{ width: "100%" }}
-              onChange={(e) => handleChange("shortDescription", e.target.value)}
+              onChange={(e) =>
+                handleChange("short_description", e.target.value)
+              }
             />
           </div>
           <div className="text-editor-num">
             <div className="text-editor">
-              <h3 className="title">price</h3>
+              <h3 className="title">Price</h3>
               <Input
                 type="number"
-                style={{ width: "100%", color: "" }}
+                style={{ width: "100%" }}
                 onChange={(e) => handleChange("price", e.target.value)}
               />
             </div>
@@ -264,23 +219,23 @@ const AddPackageDetail = () => {
               <Input
                 type="number"
                 style={{ width: "100%" }}
-                onChange={(e) => handleChange("discountPrice", e.target.value)}
+                onChange={(e) =>
+                  handleChange("discounted_price", e.target.value)
+                }
               />
             </div>
           </div>
           <div className="text-editor">
-            <h3 className="title">map</h3>
+            <h3 className="title">Map</h3>
             <Input
-              type=""
-              style={{ width: "100%", color: "" }}
+              style={{ width: "100%" }}
               onChange={(e) => handleChange("map", e.target.value)}
             />
           </div>
           <div className="text-editor">
-            <h3 className="title">location</h3>
+            <h3 className="title">Location</h3>
             <Input
-              type=""
-              style={{ width: "100%", color: "" }}
+              style={{ width: "100%" }}
               onChange={(e) => handleChange("location", e.target.value)}
             />
           </div>
@@ -288,8 +243,8 @@ const AddPackageDetail = () => {
           <div className="text-editor">
             <h3 className="title">Highlights</h3>
             <Editor
-              value={editorData?.highlights}
-              onTextChange={(e) => handleChange("highlights", e.htmlValue)}
+              value={editorData.highlights}
+              onTextChange={(e) => handleChange("highlight", e.htmlValue)}
               style={{ height: "280px", color: "black" }}
             />
           </div>
@@ -297,8 +252,8 @@ const AddPackageDetail = () => {
           <div className="text-editor">
             <h3 className="title">Need to know</h3>
             <Editor
-              value={editorData?.needToKnow}
-              onTextChange={(e) => handleChange("needToKnow", e.htmlValue)}
+              value={editorData.needToKnow}
+              onTextChange={(e) => handleChange("need_to_know", e.htmlValue)}
               style={{ height: "280px", color: "black" }}
             />
           </div>
@@ -306,8 +261,8 @@ const AddPackageDetail = () => {
           <div className="text-editor">
             <h3 className="title">Cancel policy</h3>
             <Editor
-              value={editorData?.canclePolicy}
-              onTextChange={(e) => handleChange("canclePolicy", e.htmlValue)}
+              value={editorData.canclePolicy}
+              onTextChange={(e) => handleChange("cancel_policy", e.htmlValue)}
               style={{ height: "280px", color: "black" }}
             />
           </div>
@@ -315,21 +270,12 @@ const AddPackageDetail = () => {
           <div className="text-editor">
             <h3 className="title">Inclusions</h3>
             <Editor
-              value={editorData?.inclusions}
-              onTextChange={(e) => handleChange("inclusions", e.htmlValue)}
+              value={editorData.inclusions}
+              onTextChange={(e) => handleChange("inclusion", e.htmlValue)}
               style={{ height: "280px", color: "black" }}
             />
           </div>
-          <div className="text-editor">
-            <h3 className="title">Our Packages</h3>
-            <Select
-              options={packageLists}
-              style={{ width: "100%" }}
-              onChange={(e) => handleChange("categoryId", e)}
-              placeholder="Select your packages"
-            />
-            ;
-          </div>
+
           <div className="text-editor">
             <h3 className="title">Images</h3>
             <UploadTripImg
@@ -348,15 +294,7 @@ const AddPackageDetail = () => {
             />
           </div>
 
-          <Button
-            onClick={submitHandler}
-            style={{
-              width: "200px",
-              background: "#84a845",
-              color: "#fff",
-              border: "none",
-            }}
-          >
+          <Button onClick={submitHandler} type="primary">
             Submit
           </Button>
         </div>

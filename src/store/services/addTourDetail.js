@@ -1,16 +1,17 @@
 // 
 
 
-import { createApi } from "@reduxjs/toolkit/query/react";
-import { dynamicBaseQuery } from "./BadRequestHandler/BadRequestHandler";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+//import { dynamicBaseQuery } from "./BadRequestHandler/BadRequestHandler";
 
 export const packageDetail = createApi({
   reducerPath: "packageDetail",
-  baseQuery: dynamicBaseQuery,
+  // baseQuery: dynamicBaseQuery,
+  baseQuery: fetchBaseQuery({ baseUrl: 'http://127.0.0.1:8000/' }),
   endpoints: (builder) => ({
     getPackageDetail: builder.query({
       query: (body) => ({
-        url: `/package/PackageGetById/${body}`,
+        url: `api/package/PackageGetById/${body}`,
         method: "GET",
       }),
       providesTags:["category"]
@@ -47,14 +48,6 @@ export const packageDetail = createApi({
       }),
       invalidatesTags:["category"]
     }),
-
-    // deletePackage: builder.mutation({
-    //   query: (body) => ({
-    //     url: `/package/PackageDeleteById/${body.id}`,
-    //     method: "DELETE",
-    //     }), 
-    //   invalidatesTags:["category"]
-    // }),
   }),
 });
 

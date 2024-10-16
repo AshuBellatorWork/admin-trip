@@ -9,8 +9,11 @@ import PrimaryModal from "../../common/modal";
 import AddTourPackages from "../../components/popUpElement/tourPakcages/AddTourPackages"
 // import { useGetTourPackagesQuery } from "../../store/services/tourPackages";
 import EditTourPackages from "../../components/popUpElement/tourPakcages/EditTourPackages";
-import { useDeletePackageMutation, useDeleteTourPackageMutation, useGetTourCategoryQuery } from "../../store/services/tourPackages";
-import { useGetPackagesQuery } from "../../store/services/package";
+import { useDeleteTourPackageMutation, useGetTourCategoryQuery } from "../../store/services/tourPackages";
+import {
+  useGetPackagesQuery,
+  useDeletePackageMutation,
+} from "../../store/services/package";
 
 import { Link } from "react-router-dom";
 import "./style.scss";
@@ -67,8 +70,6 @@ const Packages = () => {
       dataIndex: "category",
       key: "category",
     },
-
-
     {
       title: "Action",
       dataIndex: "Action",
@@ -88,28 +89,24 @@ const Packages = () => {
           width={50}
           height={50}
           style={{ borderRadius: "100px" }}
-          src={item?.images}
+          src={`${item?.localPath}/${item?.image}`}
         />
       ),
       packageName: (
-        <Link to={`https://tripatours.com/tour-detail/${item?._id}`}>
+        <Link to={`https://tripatours.com/tour-detail/${item?.id}`}>
           {item.name}
         </Link>
       ),
       category: item.category.name,
       Action: (
         <div style={{ display: "flex", alignItems: "center" }}>
-          <Link to={`/itinerary/${item?._id}`}>
+          <Link to={`/itinerary/${item?.id}`}>
             <Tag color={geekblue} className="cursor-pointor">
               <FaRoute />
             </Tag>
           </Link>
-          {/* <Link to={`/package-detail/${item?._id}`}>
-          <Tag color={geekblue} className="cursor-pointor">
-            Check Detail
-          </Tag>
-            </Link> */}
-          <Link to={`/edit-package-detail/${item?._id}`}>
+
+          <Link to={`/edit-package-detail/${item?.id}`}>
             <Tag color={geekblue} className="cursor-pointor ">
               <FaRegEdit />
             </Tag>
@@ -145,8 +142,9 @@ const Packages = () => {
     setIsModalOpen(true)
   }
   const [triger, { data: deleteData }] = useDeletePackageMutation()
+  // console.log(deleteData);
   const deletePackage = () => {
-    triger({ id: tourPackageData?._id });
+    triger({ id: tourPackageData?.id });
   };
 
   const modalComponentObject = [
@@ -166,8 +164,7 @@ const Packages = () => {
   ];
   useEffect(() => {
     if (deleteData?.status || deleteData?.success) {
-      message.success(deleteData.message)
-      // triggerHandler(paginationData)
+      message.success("Package deleted successfully.");
       handleCancel()
     }
   }, [deleteData])
@@ -215,10 +212,6 @@ const Packages = () => {
           </div>
         </div>
         <Table dataSource={dataSource} columns={Columns} pagination={false} />;
-        {/* <Pagination
-        paginationData={paginationData}
-        setPaginationData={setPagination}
-        /> */}
       </div>
     </div>
      }

@@ -37,6 +37,7 @@ export const getTourPackages = createApi({
         }), 
       invalidatesTags:["category"]
     }),
+    
     deletePackage: builder.mutation({
       query: (body) => ({
         url: `/package/PackageDeleteById/${body.id}`,

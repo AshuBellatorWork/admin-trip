@@ -1,9 +1,10 @@
-import { createApi } from "@reduxjs/toolkit/query/react";
-import { dynamicBaseQuery } from "./BadRequestHandler/BadRequestHandler";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+// import { dynamicBaseQuery } from "./BadRequestHandler/BadRequestHandler";
 
 export const getItinerary = createApi({
     reducerPath: "itinerary",
-    baseQuery: dynamicBaseQuery,
+    // baseQuery: dynamicBaseQuery,
+     baseQuery: fetchBaseQuery({ baseUrl: 'http://127.0.0.1:8000' }),
     endpoints: (builder) => ({
         getItinerary: builder.query({
             query: (id) => ({
@@ -34,8 +35,16 @@ export const getItinerary = createApi({
                 method: "DELETE",
             }),
             invalidatesTags:["itinerary"]
-        })
+        }),
+
+        getItenary: builder.query({
+            query: (id) => ({
+                url: `/api/itenary`,
+                method: "GET"
+            }),
+            providesTags:["itinerary"]
+        }),
         
     })
 })
-export const {useGetItineraryQuery,useAddItineraryMutation,useUpdateItineraryMutation,useDeleteItineraryMutation} = getItinerary;
+export const {useGetItineraryQuery,useAddItineraryMutation,useUpdateItineraryMutation,useDeleteItineraryMutation, useGetItenaryQuery} = getItinerary;

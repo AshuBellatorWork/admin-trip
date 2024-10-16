@@ -8,7 +8,7 @@ export const getCategory = createApi({
   endpoints: (builder) => ({
     getCategory: builder.query({
       query: () => ({
-        url: "/category/getCategory",
+        url: "/api/category",
         method: "GET",
       }),
       providesTags:["category"]
