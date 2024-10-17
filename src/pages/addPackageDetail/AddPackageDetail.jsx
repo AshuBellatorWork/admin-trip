@@ -10,6 +10,7 @@ import { Button, Input, Select, message, Checkbox, Col, Row } from "antd";
 // import { BreadCrum } from "../../components/breadCrume";
 import Loader from "../../components/loader/Loader";
 import { useGetPackagesQuery, useAddPackageMutation } from "../../store/services/package"; 
+import { useGetCategoryQuery } from "../../store/services/category";
 // import { useAddPackageMutation } from "../../store/services/package"; //
 
 const AddPackageDetail = () => {
@@ -48,7 +49,7 @@ const AddPackageDetail = () => {
   const { data: itineraryData = {}, isLoading: loadingItinerary } = useGetItenaryQuery();
   const { data: packagesData } = useGetTourCategoryQuery();
   const { data: categories = {}, isLoading: loadingCategories } =
-    useGetPackagesQuery();
+    useGetCategoryQuery();
   // console.log(categories);
 
   const handleChange = (name, value) => {
