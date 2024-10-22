@@ -11,7 +11,17 @@ export const inquiry = createApi({
       }),
     }),
 
+    updateStatus: builder.mutation({
+        query: (body) => (console.log(body),{
+
+          url: `/api/inquiry/updateEnquiryStatus/${body.id}`,
+          method: "PUT",
+          body:{status:body.value}
+          }),
+        invalidatesTags:["enquiryList"]
+    }),
+
   }),
 });
-export const { useGetInquiryQuery } = inquiry;
+export const { useGetInquiryQuery, useUpdateStatusMutation } = inquiry;
 

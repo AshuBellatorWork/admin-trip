@@ -1,54 +1,61 @@
 import React, { useEffect, useState } from 'react'
 import { Select, Space, Table, Tag } from 'antd';
-import { useEnquiryListQuery, useUpdateStatusMutation } from "../../store/services/enquiryList"
-import { useGetInquiryQuery } from "../../store/services/inquiry"; 
+// import { useEnquiryListQuery, useUpdateStatusMutation } from "../../store/services/enquiryList"
+import { useGetInquiryQuery, useUpdateStatusMutation } from "../../store/services/inquiry"; 
 import Loader from '../../components/loader/Loader';
 
 const EnquiryList = () => {
-  const [searchText, setSearchText] = useState("")
-  const [status, setStatus] = useState()
-  const [filter, setFilter] = useState("")
+  const [searchText, setSearchText] = useState("");
+  const [status, setStatus] = useState();
+  const [filter, setFilter] = useState("");
   // const { data: enquiryListDara,isLoading } = useEnquiryListQuery({ page: 1, status: filter })
   const { data: inquiriesData, isLoading, isError } = useGetInquiryQuery();
   console.log(inquiriesData);
-  const [trigger, { data: updateStatusData }] = useUpdateStatusMutation()
-  // console.log(filter)
-  const option = [{
-    value: "IN PROCESS",
-    label: "IN PROCESS"
-  }, {
-    value: "COMPLETED",
-    label: "APPROVED"
-  },
-  {
-    value: "CANCELLED",
-    label: "REJECTED"
-  }]
-  const option2 = [{
-    value: "",
-    label: "ALL"
-  },{
-    value: "IN PROCESS",
-    label: "IN PROCESS"
-  }, {
-    value: "COMPLETED",
-    label: "APPROVED"
-  },
-  {
-    value: "CANCELLED",
-    label: "REJECTED"
-  }]
+  const [trigger, { data: updateStatusData }] = useUpdateStatusMutation();
+  // console.log(data,)
+  const option = [
+    {
+      value: "0",
+      label: "IN PROCESS",
+    },
+    {
+      value: "1",
+      label: "APPROVED",
+    },
+    {
+      value: "2",
+      label: "REJECTED",
+    },
+  ];
+  const option2 = [
+    {
+      value: "",
+      label: "ALL",
+    },
+    {
+      value: "IN PROCESS",
+      label: "IN PROCESS",
+    },
+    {
+      value: "COMPLETED",
+      label: "APPROVED",
+    },
+    {
+      value: "CANCELLED",
+      label: "REJECTED",
+    },
+  ];
   const checkStatus = {
     "IN PROCESS": "IN PROCESS",
     COMPLETED: "APPROVED",
-    CANCELLED: "REJECTED"
-  }
+    CANCELLED: "REJECTED",
+  };
 
   const checkStatusColor = {
     0: "yellow",
     1: "green",
-    2: "red"
-  }
+    2: "red",
+  };
 
   const Columns = [
     {
@@ -62,11 +69,17 @@ const EnquiryList = () => {
           String(record.name).toLowerCase().includes(value.toLowerCase()) ||
           String(record.email).toLowerCase().includes(value.toLowerCase()) ||
           String(record.phone).toLowerCase().includes(value.toLowerCase()) ||
-          String(record.packageName).toLowerCase().includes(value.toLowerCase()) ||
-          String(record.peopleInfo).toLowerCase().includes(value.toLowerCase()) ||
-          String(record.status.props.children).toLowerCase().includes(value.toLowerCase())
-        )
-      }
+          String(record.packageName)
+            .toLowerCase()
+            .includes(value.toLowerCase()) ||
+          String(record.peopleInfo)
+            .toLowerCase()
+            .includes(value.toLowerCase()) ||
+          String(record.status.props.children)
+            .toLowerCase()
+            .includes(value.toLowerCase())
+        );
+      },
     },
     {
       title: "Full Name",
@@ -145,53 +158,65 @@ const EnquiryList = () => {
     };
   });
 
-
   useEffect(() => {
-    trigger(status)
-  }, [status])
-
-
+    trigger(status);
+  }, [status]);
 
   return (
     <>
-    {isLoading? <Loader/>:
-    <div className='wrapper'>
-    <div className="entries-pagination">
-      <div className="show-entites">
-        <div style={{ paddingLeft: "5px" }}>
-          <label className="d-inline-flex align-items-center">
-            Show&nbsp;
-            <select
-              className="custom-select-sm"
-              value={""}
-
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <div className="wrapper">
+          <div className="entries-pagination">
+            <div className="show-entites">
+              <div style={{ paddingLeft: "5px" }}>
+                <label className="d-inline-flex align-items-center">
+                  Show&nbsp;
+                  <select className="custom-select-sm" value={""}>
+                    <option value="100">100</option>
+                    <option value="250">250</option>
+                    <option value="500">500</option>
+                    <option value="1000">1000</option>
+                    <option value="2000">2000</option>
+                  </select>
+                  &nbsp;entries
+                </label>
+              </div>
+            </div>
+            <div
+              className="filter"
+              style={{
+                display: "flex",
+                gap: "10px",
+                justifyContent: "center",
+                alignItems: "center",
+                fontSize: "16px",
+              }}
             >
-              <option value="100">100</option>
-              <option value="250">250</option>
-              <option value="500">500</option>
-              <option value="1000">1000</option>
-              <option value="2000">2000</option>
-            </select>
-            &nbsp;entries
-          </label>
+              <p>Search by Status</p>
+              <Select
+                options={option2}
+                style={{ width: "120px" }}
+                onChange={(e) => setFilter(e)}
+              />
+            </div>
+            <div className="search">
+              <label htmlFor="#" className="search-label">
+                Search :{" "}
+              </label>
+              <input
+                type="search"
+                className="search-bar"
+                onChange={(e) => setSearchText(e.target.value)}
+              />
+            </div>
+          </div>
+          <Table columns={Columns} dataSource={data} pagination={false} />;
         </div>
-
-      </div>
-      <div className="filter" style={{ display: "flex", gap: "10px", justifyContent: "center", alignItems: "center", fontSize: "16px" }}>
-        <p>Search by Status</p>
-        <Select options={option2} style={{ width: "120px" }} onChange={(e) => setFilter(e)} />
-      </div>
-      <div className="search">
-        <label htmlFor="#" className="search-label">Search : </label>
-        <input type="search" className="search-bar" onChange={(e) => setSearchText(e.target.value)} />
-      </div>
-    </div>
-    <Table columns={Columns} dataSource={data} pagination={false} />;
-  </div>  }
+      )}
     </>
-  
-  )
-
+  );
 }
 
 export default EnquiryList
