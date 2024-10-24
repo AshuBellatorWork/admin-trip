@@ -5,6 +5,7 @@ import {
   categoryRoutes,
   dashBoardRoute,
   enquiryList,
+  generalEnquiryList,
   favRoutes,
   feedbackRoute,
   loginRoute,
@@ -36,51 +37,77 @@ const SiderComponent = ({onClose}) => {
   const items = [
     {
       key: "1",
-      label: <Link to={dashBoardRoute} onClick={onClose}>Dashboard</Link>,
+      label: (
+        <Link to={dashBoardRoute} onClick={onClose}>
+          Dashboard
+        </Link>
+      ),
       icon: <MdDashboard />,
     },
     {
       key: "2",
-      label: <Link to={categoryRoutes} onClick={onClose}>Category</Link>,
+      label: (
+        <Link to={categoryRoutes} onClick={onClose}>
+          Category
+        </Link>
+      ),
       icon: <PiStudentBold />,
-  },
+    },
     {
       key: "3",
       label: "Packages Section",
       icon: <PiStudentBold />,
-      children:[
+      children: [
+        {
+          key: "4",
+          label: (
+            <Link to={packageRoutes} onClick={onClose}>
+              Package
+            </Link>
+          ),
+          icon: <PiStudentBold />,
+        },
+      ],
+    },
+    {
+      key: "5",
+      label: (
+        <Link to={favRoutes} onClick={onClose}>
+          Favourite
+        </Link>
+      ),
+      icon: <GrLike />,
+    },
+    {
+      key: "6",
+      label: (
+        <Link to={feedbackRoute} onClick={onClose}>
+          Feedback
+        </Link>
+      ),
+      icon: <FcFeedback />,
+    },
+    {
+      key: "7",
+      label: (
+        <Link to={enquiryList} onClick={onClose}>
+          Enquiry List
+        </Link>
+      ),
+      icon: <MdDashboard />,
+    },
+    {
+      key: "8",
+      label: (<Link to={generalEnquiryList} onClick={onClose}> General Enquiry List </Link> ),
+      icon: <MdDashboard />,
+    },
 
-      {
-        key: "4",
-        label: <Link to={packageRoutes} onClick={onClose}>Package</Link>,
-        icon: <PiStudentBold />,
-    },
-    
-  
-    ]
-    },
-      {
-        key: "5",
-        label: <Link to={favRoutes} onClick={onClose}>Favourite</Link>,
-        icon: <GrLike />,
-      },
-      {
-        key: "6",
-        label: <Link to={feedbackRoute} onClick={onClose}>Feedback</Link>,
-        icon: <FcFeedback />,
-      },
-      {
-        key: "7",
-        label: <Link to={enquiryList} onClick={onClose}>Enquiry List</Link>,
-        icon: <MdDashboard />,
-      },
-   
     {
       key: "8",
       label: (
         <span
           onClick={() => {
-            onClose()
+            onClose();
             setIsModalOpen(true);
             setModalOpenValue(0);
           }}

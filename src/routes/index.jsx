@@ -3,15 +3,14 @@ import LayoutPrimary from "../layout";
 import {
   addPackageDetail,
   categoryRoutes,
- 
   editPackageDetail,
   enquiryList,
+  generalEnquiryList,
   favRoutes,
   feedbackRoute,
   itinerary,
   loginRoute,
   packageRoutes,
-
 } from "./PagesRoutes";
 import Dashboard from "../pages/dashboard";
 import LoginLayout from "../pages/auth";
@@ -24,6 +23,7 @@ import Category from "../pages/category";
 import EditPackageDetail from "../pages/addPackageDetail/EditPackageDetail";
 import Feedback from "../pages/feedback/Feesback";
 import EnquiryList from "../pages/enquirylist/EnquiryList";
+import GeneralEnquiryList from "../pages/generalenquirylist/GeneralEnquiryList";
 import Itinerary from "../pages/itnerary/Itinerary";
 
 const userType = localStorage.getItem("userType");
@@ -69,6 +69,10 @@ export const router = createBrowserRouter([
       {
         path:enquiryList,
         element: <EnquiryList />,
+      },
+      {
+        path:generalEnquiryList,
+        element: <GeneralEnquiryList />,
       },
       {
         path:itinerary,
