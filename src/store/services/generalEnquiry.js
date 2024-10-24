@@ -15,7 +15,7 @@ export const generalEnquired = createApi({
       query: (body) => (
         console.log(body),
         {
-          url: `/api/general-inquiry/updateEnquiryStatus/${body.id}`,
+          url: `/api/general-inquiry/updateGeneralEnquiryStatus/${body.id}`,
           method: "PUT",
           body: { status: body.value },
         }

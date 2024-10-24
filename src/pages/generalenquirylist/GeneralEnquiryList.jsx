@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { Select, Table } from "antd";
-import { useUpdateStatusMutation } from "../../store/services/inquiry";
-import { useGetgeneralEnquiryQuery } from "../../store/services/generalEnquiry";
+// import { useUpdateStatusMutation } from "../../store/services/inquiry";
+import { useGetgeneralEnquiryQuery, useUpdateStatusMutation } from "../../store/services/generalEnquiry";
 import Loader from "../../components/loader/Loader";
 
 const GeneralEnquiryList = () => {
