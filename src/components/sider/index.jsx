@@ -6,6 +6,7 @@ import {
   dashBoardRoute,
   enquiryList,
   generalEnquiryList,
+  orderList,
   favRoutes,
   feedbackRoute,
   loginRoute,
@@ -98,12 +99,23 @@ const SiderComponent = ({onClose}) => {
     },
     {
       key: "8",
-      label: (<Link to={generalEnquiryList} onClick={onClose}> General Enquiry List </Link> ),
+      label: (
+        <Link to={generalEnquiryList} onClick={onClose}>
+          {" "}
+          General Enquiry List{" "}
+        </Link>
+      ),
       icon: <MdDashboard />,
     },
 
     {
-      key: "8",
+      key: "9",
+      label: (<Link to={orderList} onClick={onClose}> {" "} Order List{" "} </Link>),
+      icon: <MdDashboard />,
+    },
+
+    {
+      key: "10",
       label: (
         <span
           onClick={() => {

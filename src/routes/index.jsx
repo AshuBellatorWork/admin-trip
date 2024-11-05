@@ -6,6 +6,7 @@ import {
   editPackageDetail,
   enquiryList,
   generalEnquiryList,
+  orderList,
   favRoutes,
   feedbackRoute,
   itinerary,
@@ -25,6 +26,7 @@ import Feedback from "../pages/feedback/Feesback";
 import EnquiryList from "../pages/enquirylist/EnquiryList";
 import GeneralEnquiryList from "../pages/generalenquirylist/GeneralEnquiryList";
 import Itinerary from "../pages/itnerary/Itinerary";
+import OrderList from "../pages/orderList/orderList"; //src\pages\orderList\OrderList.jsx
 
 const userType = localStorage.getItem("userType");
 
@@ -42,48 +44,48 @@ export const router = createBrowserRouter([
         path: categoryRoutes,
         element: <Category />,
       },
-   
-     
+
       {
-        path:packageRoutes ,
+        path: packageRoutes,
         element: <Packages />,
       },
       {
-        path:feedbackRoute ,
+        path: feedbackRoute,
         element: <Feedback />,
       },
       {
-        path:favRoutes ,
+        path: favRoutes,
         element: <Favourite />,
       },
       {
-        path:editPackageDetail,
-        element: <EditPackageDetail/>,
+        path: editPackageDetail,
+        element: <EditPackageDetail />,
       },
       {
-        path:addPackageDetail,
+        path: addPackageDetail,
         element: <AddPackageDetail />,
       },
-     
-      
+
       {
-        path:enquiryList,
+        path: enquiryList,
         element: <EnquiryList />,
       },
       {
-        path:generalEnquiryList,
+        path: generalEnquiryList,
         element: <GeneralEnquiryList />,
       },
       {
-        path:itinerary,
+        path: orderList,
+        element: <OrderList />,
+      },
+      {
+        path: itinerary,
         element: <Itinerary />,
       },
       {
-        
         path: "*",
         element: <PageNotFound />,
       },
-    
     ],
   },
   {

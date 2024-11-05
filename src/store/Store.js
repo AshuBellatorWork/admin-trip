@@ -14,6 +14,7 @@ import { packaged } from "./services/package";
 import { inquiry } from "./services/inquiry";
 import { desertExtremeInquiry } from "./services/desertExtremeInquiry"; 
 import { generalEnquired } from "./services/generalEnquiry"; 
+import { getOrders } from "./services/orderList"; 
 
 export const store = configureStore({
   reducer: {
@@ -32,6 +33,7 @@ export const store = configureStore({
     [inquiry.reducerPath]: inquiry.reducer,
     [desertExtremeInquiry.reducerPath]: desertExtremeInquiry.reducer,
     [generalEnquired.reducerPath]: generalEnquired.reducer,
+    [getOrders.reducerPath]: getOrders.reducer,
   },
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.
@@ -50,7 +52,8 @@ export const store = configureStore({
       .concat(packaged.middleware)
       .concat(inquiry.middleware)
       .concat(desertExtremeInquiry.middleware)
-      .concat(generalEnquired.middleware),
+      .concat(generalEnquired.middleware)
+      .concat(getOrders.middleware),
 });
 
 // optional, but required for refetchOnFocus/refetchOnReconnect behaviors

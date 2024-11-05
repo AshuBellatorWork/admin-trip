@@ -130,6 +130,7 @@ const EnquiryList = () => {
       email: item?.email,
       phone: item?.phone_number,
       packageName: item?.package.name,
+      peopleInfo: item?.package.peopleInfo,
       status: (
         <p
           style={{
