@@ -1,42 +1,17 @@
 import { useState, useEffect } from "react";
-// import { useAddPackageDetailMutation } from "../../store/services/addTourDetail";
-import { useGetItenaryQuery } from "../../store/services/itinerary";
-import { Editor } from "primereact/editor";
-import "./styles.scss";
-import { useNavigate } from "react-router-dom";
-import UploadTripImg from "./uploadTripImg";
-import { useGetTourCategoryQuery } from "../../store/services/tourPackages";
-import { Button, Input, Select, message, Checkbox, Col, Row } from "antd";
-// import { BreadCrum } from "../../components/breadCrume";
+import { useAddPackageMutation } from "../../store/services/addTourDetail"; // Use correct import for mutation
+import { Button, Input, Select, message } from "antd";
 import Loader from "../../components/loader/Loader";
-import {
-  useGetPackagesQuery,
-  useAddPackageMutation,
-} from "../../store/services/package";
-import { useGetCategoryQuery } from "../../store/services/category";
-// import { useAddPackageMutation } from "../../store/services/package"; //
+import { useNavigate } from "react-router-dom";
 
 const AddOrder = () => {
-  const [fileList, setFileList] = useState([]);
-  const [fileList2, setFileList2] = useState([]);
-  const [editorData, setEditorData] = useState({
-    category_id: "",
-    name: "",
-    highlight: "",
-    need_to_know: "",
-    cancel_policy: "",
-    inclusion: "",
-    package_duration: "",
-    package_night: "",
-    star: "",
-    info: [],
-    description: "",
-    short_description: "",
-    location: "",
-    price: "",
-    discounted_price: "",
-    map: "",
-    galleryPhoto: [],
+  const [formData, setFormData] = useState({
+    first_name: "",
+    last_name: "",
+    package_id: "",
+    member: "",
+    total_price: "",
+    status: "",
   });
 
   const [triggre, { data: addData, isLoading }] = useAddPackageMutation();
@@ -45,260 +20,111 @@ const AddOrder = () => {
   useEffect(() => {
     if (addData?.status || addData?.success) {
       message.success(addData.message);
-      navigate("/package"); // Redirect on success
+      navigate("/orders"); // Redirect on success
     }
   }, [addData, navigate]);
 
-  const { data: itineraryData = {}, isLoading: loadingItinerary } =
-    useGetItenaryQuery();
-  const { data: packagesData } = useGetTourCategoryQuery();
-  const { data: categories = {}, isLoading: loadingCategories } =
-    useGetCategoryQuery();
-  // console.log(categories);
-
   const handleChange = (name, value) => {
-    setEditorData((prev) => ({
+    setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
 
   const submitHandler = () => {
-    if (!fileList2[0]?.originFileObj) {
-      return message.error("Please add package images.");
-    } else if (fileList.length < 5) {
-      return message.error("Please add at least five images.");
+    if (!formData.first_name || !formData.last_name || !formData.package_id) {
+      return message.error("Please fill all required fields.");
     } else {
-      const formData = new FormData();
-      Object.entries(editorData).forEach(([key, value]) => {
-        formData.append(key, value);
-      });
-      fileList.forEach((item) =>
-        formData.append("galleryPhoto[]", item.originFileObj)
-      );
-      formData.append("image", fileList2[0].originFileObj);
       triggre(formData);
     }
   };
 
-  const starOption = [
-    { value: "1", label: "1" },
-    { value: "2", label: "2" },
-    { value: "3", label: "3" },
-    { value: "4", label: "4" },
-    { value: "5", label: "5" },
+  const statusOptions = [
+    { value: "0", label: "IN PROCESS" },
+    { value: "1", label: "APPROVED" },
+    { value: "2", label: "REJECTED" },
   ];
 
-  const onChange = (checkedValues) => {
-    setEditorData((prev) => ({
-      ...prev,
-      info: checkedValues,
-    }));
-  };
   return (
     <>
-      {isLoading || loadingCategories || loadingItinerary ? (
+      {isLoading ? (
         <Loader />
       ) : (
-        <div className="text-editor-wrapper">
-          <div className="add-package">
-            <p>Add Order</p>
-          </div>
-          <div className="text-editor">
-            <h3 className="title">Name</h3>
+        <div className="add-order-form">
+          <h2>Add Order</h2>
+
+          {/* First Name */}
+          <div className="input-field">
+            <h3 className="label">First Name</h3>
             <Input
               type="text"
               style={{ width: "100%" }}
-              onChange={(e) => handleChange("name", e.target.value)}
+              onChange={(e) => handleChange("first_name", e.target.value)}
+              value={formData.first_name}
             />
           </div>
-          <div className="text-editor">
-            <h3 className="title">Categories</h3>
-            <Select
-              mode="multiple"
+
+          {/* Last Name */}
+          <div className="input-field">
+            <h3 className="label">Last Name</h3>
+            <Input
+              type="text"
               style={{ width: "100%" }}
-              placeholder="Select categories"
-              onChange={(values) => handleChange("category_id", values)}
+              onChange={(e) => handleChange("last_name", e.target.value)}
+              value={formData.last_name}
+            />
+          </div>
+
+          {/* Package ID */}
+          <div className="input-field">
+            <h3 className="label">Package ID</h3>
+            <Input
+              type="text"
+              style={{ width: "100%" }}
+              onChange={(e) => handleChange("package_id", e.target.value)}
+              value={formData.package_id}
+            />
+          </div>
+
+          {/* Member */}
+          <div className="input-field">
+            <h3 className="label">Member</h3>
+            <Input
+              type="number"
+              style={{ width: "100%" }}
+              onChange={(e) => handleChange("member", e.target.value)}
+              value={formData.member}
+            />
+          </div>
+
+          {/* Total Price */}
+          <div className="input-field">
+            <h3 className="label">Total Price</h3>
+            <Input
+              type="number"
+              style={{ width: "100%" }}
+              onChange={(e) => handleChange("total_price", e.target.value)}
+              value={formData.total_price}
+            />
+          </div>
+
+          {/* Status */}
+          <div className="input-field">
+            <h3 className="label">Status</h3>
+            <Select
+              style={{ width: "100%" }}
+              onChange={(value) => handleChange("status", value)}
+              value={formData.status}
             >
-              {categories?.data?.map((category) => (
-                <Select.Option key={category.id} value={category.id}>
-                  {category.name}
+              {statusOptions.map((option) => (
+                <Select.Option key={option.value} value={option.value}>
+                  {option.label}
                 </Select.Option>
               ))}
             </Select>
           </div>
 
-          <div className="text-editor-num2">
-            <div className="text-editor">
-              <h3 className="title">Packages Night</h3>
-              <select
-                className="packageNight"
-                id="rating"
-                style={{
-                  width: "100%",
-                  padding: "7px",
-                  outline: "none",
-                  border: "1px solid #ccc",
-                }}
-                onChange={(e) => handleChange("package_night", e.target.value)}
-              >
-                {Array.from({ length: 11 }, (_, i) => (
-                  <option key={i} value={i}>
-                    {i}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="text-editor">
-              <h3 className="title">Package Rating</h3>
-              <Select
-                className="rating"
-                style={{ width: "100%" }}
-                options={starOption}
-                onChange={(e) => handleChange("star", e)}
-              />
-            </div>
-          </div>
-          <div className="text-editor">
-            <h3 className="title">Day/Night Schedule</h3>
-            <Input
-              id="textarea"
-              name="textarea"
-              rows="4"
-              cols="50"
-              style={{ width: "100%" }}
-              onChange={(e) => handleChange("package_duration", e.target.value)}
-            />
-          </div>
-
-          <div className="text-editor">
-            <h3 className="title">Info</h3>
-            <Checkbox.Group style={{ width: "100%" }} onChange={onChange}>
-              <Row>
-                {itineraryData.data?.map((itenary) => (
-                  <Col span={8} key={itenary.id}>
-                    {" "}
-                    {/* Use unique id */}
-                    <Checkbox value={itenary.id}>{itenary.name}</Checkbox>
-                  </Col>
-                ))}
-              </Row>
-            </Checkbox.Group>
-          </div>
-
-          <div className="text-editor">
-            <h3 className="title">Description</h3>
-            <textarea
-              id="textarea"
-              name="textarea"
-              rows="4"
-              cols="50"
-              style={{ width: "100%" }}
-              onChange={(e) => handleChange("description", e.target.value)}
-            />
-          </div>
-          <div className="text-editor">
-            <h3 className="title">Short Description</h3>
-            <textarea
-              id="textarea"
-              name="textarea"
-              rows="4"
-              cols="50"
-              style={{ width: "100%" }}
-              onChange={(e) =>
-                handleChange("short_description", e.target.value)
-              }
-            />
-          </div>
-          <div className="text-editor-num">
-            <div className="text-editor">
-              <h3 className="title">Price</h3>
-              <Input
-                type="number"
-                style={{ width: "100%" }}
-                onChange={(e) => handleChange("price", e.target.value)}
-              />
-            </div>
-            <div className="text-editor">
-              <h3 className="title">Discount Price</h3>
-              <Input
-                type="number"
-                style={{ width: "100%" }}
-                onChange={(e) =>
-                  handleChange("discounted_price", e.target.value)
-                }
-              />
-            </div>
-          </div>
-          <div className="text-editor">
-            <h3 className="title">Map</h3>
-            <Input
-              style={{ width: "100%" }}
-              onChange={(e) => handleChange("map", e.target.value)}
-            />
-          </div>
-          <div className="text-editor">
-            <h3 className="title">Location</h3>
-            <Input
-              style={{ width: "100%" }}
-              onChange={(e) => handleChange("location", e.target.value)}
-            />
-          </div>
-
-          <div className="text-editor">
-            <h3 className="title">Highlights</h3>
-            <Editor
-              value={editorData.highlights}
-              onTextChange={(e) => handleChange("highlight", e.htmlValue)}
-              style={{ height: "280px", color: "black" }}
-            />
-          </div>
-
-          <div className="text-editor">
-            <h3 className="title">Need to know</h3>
-            <Editor
-              value={editorData.needToKnow}
-              onTextChange={(e) => handleChange("need_to_know", e.htmlValue)}
-              style={{ height: "280px", color: "black" }}
-            />
-          </div>
-
-          <div className="text-editor">
-            <h3 className="title">Cancel policy</h3>
-            <Editor
-              value={editorData.canclePolicy}
-              onTextChange={(e) => handleChange("cancel_policy", e.htmlValue)}
-              style={{ height: "280px", color: "black" }}
-            />
-          </div>
-
-          <div className="text-editor">
-            <h3 className="title">Inclusions</h3>
-            <Editor
-              value={editorData.inclusions}
-              onTextChange={(e) => handleChange("inclusion", e.htmlValue)}
-              style={{ height: "280px", color: "black" }}
-            />
-          </div>
-
-          <div className="text-editor">
-            <h3 className="title">Images</h3>
-            <UploadTripImg
-              setFileList={setFileList2}
-              fileList={fileList2}
-              length={1}
-            />
-          </div>
-
-          <div className="text-editor">
-            <h3 className="title">Upload Trip Images</h3>
-            <UploadTripImg
-              setFileList={setFileList}
-              fileList={fileList}
-              length={10}
-            />
-          </div>
-
+          {/* Submit Button */}
           <Button onClick={submitHandler} type="primary">
             Submit
           </Button>
@@ -309,3 +135,5 @@ const AddOrder = () => {
 };
 
 export default AddOrder;
+
+
