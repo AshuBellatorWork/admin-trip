@@ -12,6 +12,7 @@ import {
   itinerary,
   loginRoute,
   packageRoutes,
+  addOrder,
 } from "./PagesRoutes";
 import Dashboard from "../pages/dashboard";
 import LoginLayout from "../pages/auth";
@@ -26,7 +27,8 @@ import Feedback from "../pages/feedback/Feesback";
 import EnquiryList from "../pages/enquirylist/EnquiryList";
 import GeneralEnquiryList from "../pages/generalenquirylist/GeneralEnquiryList";
 import Itinerary from "../pages/itnerary/Itinerary";
-import OrderList from "../pages/orderList/orderList"; //src\pages\orderList\OrderList.jsx
+import OrderList from "../pages/orderList/orderList"; 
+import AddOrder from "../pages/orderList/AddOrder";
 
 const userType = localStorage.getItem("userType");
 
@@ -81,6 +83,10 @@ export const router = createBrowserRouter([
       {
         path: itinerary,
         element: <Itinerary />,
+      },
+      {
+        path: addOrder,
+        element: <AddOrder />,
       },
       {
         path: "*",

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { Select, Table, Button } from "antd";
 import { useUpdateStatusMutation } from "../../store/services/inquiry";
-import { useGetOrderQuery } from "../../store/services/orderList"; // Adjusted import
+import { useGetOrderQuery } from "../../store/services/orderList"; 
 import Loader from "../../components/loader/Loader";
 import { Link } from "react-router-dom";
 
@@ -12,8 +12,7 @@ const OrderList = () => {
     searchText: "",
   });
 
-  const { data: ordersData, isLoading, isError } = useGetOrderQuery(); // Updated query hook
-//console.log(ordersData, "data"); //
+  const { data: ordersData, isLoading, isError } = useGetOrderQuery(); 
   const [trigger] = useUpdateStatusMutation();
 
   const option = [

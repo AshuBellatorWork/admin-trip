@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
-import { useAddPackageMutation } from "../../store/services/addTourDetail"; // Use correct import for mutation
+import { useAddOrderMutation } from "../../store/services/orderList"; // Import your mutation from the correct service
 import { Button, Input, Select, message } from "antd";
-import Loader from "../../components/loader/Loader";
+
 import { useNavigate } from "react-router-dom";
+import Loader from "../../components/loader/Loader";
 
 const AddOrder = () => {
+  // Initialize state with only the required form fields
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
@@ -12,18 +14,22 @@ const AddOrder = () => {
     member: "",
     total_price: "",
     status: "",
+    visa: "", // Additional field for visa information
   });
 
-  const [triggre, { data: addData, isLoading }] = useAddPackageMutation();
-  const navigate = useNavigate();
+  // Destructure the mutation hook for adding an order
+  const [trigger, { data: addData, isLoading }] = useAddOrderMutation();
+  const navigate = useNavigate(); // For navigation after successful order
 
+  // Side effect to handle the response after submission
   useEffect(() => {
     if (addData?.status || addData?.success) {
       message.success(addData.message);
-      navigate("/orders"); // Redirect on success
+      navigate("/order-list"); // Redirect to the order list page after successful submission
     }
   }, [addData, navigate]);
 
+  // Handle input field changes
   const handleChange = (name, value) => {
     setFormData((prev) => ({
       ...prev,
@@ -31,14 +37,25 @@ const AddOrder = () => {
     }));
   };
 
+  // Handle form submission
   const submitHandler = () => {
-    if (!formData.first_name || !formData.last_name || !formData.package_id) {
+    // Validate required fields
+    if (
+      !formData.first_name ||
+      !formData.last_name ||
+      !formData.package_id ||
+      !formData.member ||
+      !formData.total_price ||
+      !formData.status
+    ) {
       return message.error("Please fill all required fields.");
-    } else {
-      triggre(formData);
     }
+
+    // Trigger the mutation to add the order
+    trigger(formData);
   };
 
+  // Define the options for status dropdown (adjust as necessary)
   const statusOptions = [
     { value: "0", label: "IN PROCESS" },
     { value: "1", label: "APPROVED" },
@@ -48,7 +65,7 @@ const AddOrder = () => {
   return (
     <>
       {isLoading ? (
-        <Loader />
+        <Loader /> // Show a loader while the request is in progress
       ) : (
         <div className="add-order-form">
           <h2>Add Order</h2>
@@ -59,8 +76,8 @@ const AddOrder = () => {
             <Input
               type="text"
               style={{ width: "100%" }}
-              onChange={(e) => handleChange("first_name", e.target.value)}
               value={formData.first_name}
+              onChange={(e) => handleChange("first_name", e.target.value)}
             />
           </div>
 
@@ -70,8 +87,8 @@ const AddOrder = () => {
             <Input
               type="text"
               style={{ width: "100%" }}
-              onChange={(e) => handleChange("last_name", e.target.value)}
               value={formData.last_name}
+              onChange={(e) => handleChange("last_name", e.target.value)}
             />
           </div>
 
@@ -81,19 +98,19 @@ const AddOrder = () => {
             <Input
               type="text"
               style={{ width: "100%" }}
-              onChange={(e) => handleChange("package_id", e.target.value)}
               value={formData.package_id}
+              onChange={(e) => handleChange("package_id", e.target.value)}
             />
           </div>
 
-          {/* Member */}
+          {/* Member Count */}
           <div className="input-field">
             <h3 className="label">Member</h3>
             <Input
               type="number"
               style={{ width: "100%" }}
-              onChange={(e) => handleChange("member", e.target.value)}
               value={formData.member}
+              onChange={(e) => handleChange("member", e.target.value)}
             />
           </div>
 
@@ -103,8 +120,8 @@ const AddOrder = () => {
             <Input
               type="number"
               style={{ width: "100%" }}
-              onChange={(e) => handleChange("total_price", e.target.value)}
               value={formData.total_price}
+              onChange={(e) => handleChange("total_price", e.target.value)}
             />
           </div>
 
@@ -113,8 +130,8 @@ const AddOrder = () => {
             <h3 className="label">Status</h3>
             <Select
               style={{ width: "100%" }}
-              onChange={(value) => handleChange("status", value)}
               value={formData.status}
+              onChange={(value) => handleChange("status", value)}
             >
               {statusOptions.map((option) => (
                 <Select.Option key={option.value} value={option.value}>
@@ -122,6 +139,17 @@ const AddOrder = () => {
                 </Select.Option>
               ))}
             </Select>
+          </div>
+
+          {/* Visa Information */}
+          <div className="input-field">
+            <h3 className="label">Visa Information</h3>
+            <Input
+              type="text"
+              style={{ width: "100%" }}
+              value={formData.visa}
+              onChange={(e) => handleChange("visa", e.target.value)}
+            />
           </div>
 
           {/* Submit Button */}
@@ -135,5 +163,3 @@ const AddOrder = () => {
 };
 
 export default AddOrder;
-
-

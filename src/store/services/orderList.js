@@ -13,6 +13,14 @@ export const getOrders = createApi({
       }),
       providesTags: ["order"],
     }),
+    addOrder: builder.mutation({
+      query: (body) => ({
+        url: "/api/order/add-order",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["order"],
+    }),
   }),
 });
-export const { useGetOrderQuery } = getOrders;
+export const { useGetOrderQuery, useAddOrderMutation } = getOrders;

@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-// import { useAddPackageDetailMutation } from "../../store/services/addTourDetail";
 import { useGetItenaryQuery } from "../../store/services/itinerary";
 import { Editor } from "primereact/editor";
 import "./styles.scss";
@@ -7,11 +6,9 @@ import { useNavigate } from "react-router-dom";
 import UploadTripImg from "./uploadTripImg";
 import { useGetTourCategoryQuery } from "../../store/services/tourPackages";
 import { Button, Input, Select, message, Checkbox, Col, Row } from "antd";
-// import { BreadCrum } from "../../components/breadCrume";
 import Loader from "../../components/loader/Loader";
 import { useGetPackagesQuery, useAddPackageMutation } from "../../store/services/package"; 
 import { useGetCategoryQuery } from "../../store/services/category";
-// import { useAddPackageMutation } from "../../store/services/package"; //
 
 const AddPackageDetail = () => {
   const [fileList, setFileList] = useState([]);

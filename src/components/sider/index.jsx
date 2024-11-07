@@ -13,7 +13,8 @@ import {
   packageRoutes,
 } from "../../routes/PagesRoutes";
 import { Link } from "react-router-dom";
-import { MdDashboard, MdLogout, MdMenuBook } from "react-icons/md";
+import { MdDashboard, MdLogout} from "react-icons/md";
+import { PiShoppingCartSimpleBold } from "react-icons/pi";
 import { PiStudentBold } from "react-icons/pi";
 import { FaRegCreditCard } from "react-icons/fa6";
 import { GrLike } from "react-icons/gr";
@@ -110,8 +111,13 @@ const SiderComponent = ({onClose}) => {
 
     {
       key: "9",
-      label: (<Link to={orderList} onClick={onClose}> {" "} Order List{" "} </Link>),
-      icon: <MdDashboard />,
+      label: (
+        <Link to={orderList} onClick={onClose}>
+          {" "}
+          Order List{" "}
+        </Link>
+      ),
+      icon: <PiShoppingCartSimpleBold />,
     },
 
     {

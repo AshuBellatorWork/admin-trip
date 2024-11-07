@@ -5,6 +5,7 @@ export const packageRoutes = "/package";
 export const favRoutes = "/favourite";
 export const packageDetail = "/package-detail";
 export const addPackageDetail = "/add-package-detail/";
+export const orderRoutes = "/order";
 export const addOrder = "/add-order/";
 export const showPackage = "/package-detail";
 export const editPackageDetail = "/edit-package-detail/:id";
@@ -14,7 +15,6 @@ export const addHouseRuleRoute = "/add-house-rule";
 export const feedbackRoute = "/feedback";
 export const subAdminRecordRoutes = "/sub-list";
 export const clientFeedback = "/client-feedback";
-
 export const enquiryList = "/enquiry-list";
 export const generalEnquiryList = "/general-enquiry-list";
 export const orderList = "/order-list";
