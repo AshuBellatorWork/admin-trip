@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { Select, Table, Button } from "antd";
 import { useUpdateStatusMutation } from "../../store/services/inquiry";
-import { useGetOrderQuery } from "../../store/services/orderList"; 
+import { useGetOrderQuery } from "../../store/services/orderList";
 import Loader from "../../components/loader/Loader";
 import { Link } from "react-router-dom";
 
@@ -12,7 +12,7 @@ const OrderList = () => {
     searchText: "",
   });
 
-  const { data: ordersData, isLoading, isError } = useGetOrderQuery(); 
+  const { data: ordersData, isLoading, isError } = useGetOrderQuery();
   const [trigger] = useUpdateStatusMutation();
 
   const option = [
@@ -33,6 +33,7 @@ const OrderList = () => {
     COMPLETED: "APPROVED",
     CANCELLED: "REJECTED",
   };
+
   const checkStatusColor = { 0: "yellow", 1: "green", 2: "red" };
 
   const Columns = [
@@ -55,6 +56,7 @@ const OrderList = () => {
     { title: "Action", dataIndex: "Action", key: "Action" },
   ];
 
+  // Memoize the table data to optimize re-renders
   const data = useMemo(() => {
     return ordersData?.data?.map((item, index) => ({
       key: item.id,
@@ -79,24 +81,25 @@ const OrderList = () => {
       Action: (
         <Select
           options={option}
-          value={checkStatus[item?.status]}
+          value={item?.status}
           style={{ width: "120px" }}
-          onChange={(e) =>
+          onChange={(value) => {
             setState((prev) => ({
               ...prev,
-              status: { value: e, id: item?.id },
-            }))
-          }
+              status: { value, id: item?.id },
+            }));
+          }}
         />
       ),
     }));
   }, [ordersData]);
 
+  // Trigger mutation when status changes
   useEffect(() => {
     if (state.status?.id) {
       trigger(state.status);
     }
-  }, [state.status]);
+  }, [state.status, trigger]);
 
   return (
     <>
@@ -161,3 +164,4 @@ const OrderList = () => {
 };
 
 export default OrderList;
+
