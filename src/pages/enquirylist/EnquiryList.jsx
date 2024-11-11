@@ -1,50 +1,31 @@
-import React, { useEffect, useState } from 'react'
-import { Select, Space, Table, Tag } from 'antd';
-// import { useEnquiryListQuery, useUpdateStatusMutation } from "../../store/services/enquiryList"
-import { useGetInquiryQuery, useUpdateStatusMutation } from "../../store/services/inquiry"; 
-import Loader from '../../components/loader/Loader';
+import React, { useEffect, useState } from "react";
+import { Select, Table } from "antd";
+import {
+  useGetInquiryQuery,
+  useUpdateStatusMutation,
+} from "../../store/services/inquiry";
+import Loader from "../../components/loader/Loader";
 
 const EnquiryList = () => {
   const [searchText, setSearchText] = useState("");
   const [status, setStatus] = useState();
   const [filter, setFilter] = useState("");
-  // const { data: enquiryListDara,isLoading } = useEnquiryListQuery({ page: 1, status: filter })
   const { data: inquiriesData, isLoading, isError } = useGetInquiryQuery();
-  console.log(inquiriesData);
-  const [trigger, { data: updateStatusData }] = useUpdateStatusMutation();
-  // console.log(data,)
+  const [trigger] = useUpdateStatusMutation();
+
   const option = [
-    {
-      value: "0",
-      label: "IN PROCESS",
-    },
-    {
-      value: "1",
-      label: "APPROVED",
-    },
-    {
-      value: "2",
-      label: "REJECTED",
-    },
+    { value: "0", label: "IN PROCESS" },
+    { value: "1", label: "APPROVED" },
+    { value: "2", label: "REJECTED" },
   ];
+
   const option2 = [
-    {
-      value: "",
-      label: "ALL",
-    },
-    {
-      value: "IN PROCESS",
-      label: "IN PROCESS",
-    },
-    {
-      value: "COMPLETED",
-      label: "APPROVED",
-    },
-    {
-      value: "CANCELLED",
-      label: "REJECTED",
-    },
+    { value: "", label: "ALL" },
+    { value: "IN PROCESS", label: "IN PROCESS" },
+    { value: "COMPLETED", label: "APPROVED" },
+    { value: "CANCELLED", label: "REJECTED" },
   ];
+
   const checkStatus = {
     "IN PROCESS": "IN PROCESS",
     COMPLETED: "APPROVED",
@@ -62,66 +43,18 @@ const EnquiryList = () => {
       title: "S.no",
       dataIndex: "Sno",
       key: "S.no",
-      filteredValue: [searchText],
-      onFilter: (value, record) => {
-        return (
-          String(record.Sno).toLowerCase().includes(value.toLowerCase()) ||
-          String(record.name).toLowerCase().includes(value.toLowerCase()) ||
-          String(record.email).toLowerCase().includes(value.toLowerCase()) ||
-          String(record.phone).toLowerCase().includes(value.toLowerCase()) ||
-          String(record.packageName)
-            .toLowerCase()
-            .includes(value.toLowerCase()) ||
-          String(record.peopleInfo)
-            .toLowerCase()
-            .includes(value.toLowerCase()) ||
-          String(record.status.props.children)
-            .toLowerCase()
-            .includes(value.toLowerCase())
-        );
-      },
+      onFilter: (value, record) => record.Sno.toString().includes(value),
     },
-    {
-      title: "Full Name",
-      dataIndex: "name",
-      key: "name",
-    },
-    {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
-    },
-    {
-      title: "Phone",
-      dataIndex: "phone",
-      key: "phone",
-    },
-    {
-      title: "Activity",
-      dataIndex: "packageName",
-      key: "packageName",
-    },
-    {
-      title: "No of Pack",
-      dataIndex: "peopleInfo",
-      key: "peopleInfo",
-    },
-    {
-      title: "Message",
-      dataIndex: "message",
-      key: "message",
-    },
-    {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-    },
-    {
-      title: "Action",
-      dataIndex: "Action",
-      key: "Action",
-    },
+    { title: "Full Name", dataIndex: "name", key: "name" },
+    { title: "Email", dataIndex: "email", key: "email" },
+    { title: "Phone", dataIndex: "phone", key: "phone" },
+    { title: "Activity", dataIndex: "packageName", key: "packageName" },
+    { title: "No of Pack", dataIndex: "peopleInfo", key: "peopleInfo" },
+    { title: "Message", dataIndex: "message", key: "message" },
+    { title: "Status", dataIndex: "status", key: "status" },
+    { title: "Action", dataIndex: "Action", key: "Action" },
   ];
+
   const data = inquiriesData?.data?.map((item, index) => {
     return {
       key: item._id,
@@ -130,7 +63,6 @@ const EnquiryList = () => {
       email: item?.email,
       phone: item?.phone_number,
       packageName: item?.package.name,
-      peopleInfo: item?.package.peopleInfo,
       status: (
         <p
           style={{
@@ -139,14 +71,13 @@ const EnquiryList = () => {
             borderRadius: "5px",
             textAlign: "center",
             color:
-              checkStatusColor[item?.status] == "yellow" ? "black" : "white",
+              checkStatusColor[item?.status] === "yellow" ? "black" : "white",
             background: checkStatusColor[item?.status],
           }}
         >
           {checkStatus[item?.status]}
         </p>
       ),
-      peopleInfo: item?.peopleInfo,
       message: item?.message,
       Action: (
         <Select
@@ -160,7 +91,9 @@ const EnquiryList = () => {
   });
 
   useEffect(() => {
-    trigger(status);
+    if (status?.value) {
+      trigger(status); // Ensure status contains the right value
+    }
   }, [status]);
 
   return (
@@ -200,6 +133,7 @@ const EnquiryList = () => {
                 options={option2}
                 style={{ width: "120px" }}
                 onChange={(e) => setFilter(e)}
+                value={filter}
               />
             </div>
             <div className="search">
@@ -213,11 +147,11 @@ const EnquiryList = () => {
               />
             </div>
           </div>
-          <Table columns={Columns} dataSource={data} pagination={false} />;
+          <Table columns={Columns} dataSource={data} pagination={false} />
         </div>
       )}
     </>
   );
-}
+};
 
-export default EnquiryList
+export default EnquiryList;
