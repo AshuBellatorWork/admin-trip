@@ -5,9 +5,9 @@ import { loginRoute } from "../../../routes/PagesRoutes";
 
 export const dynamicBaseQuery = async (args, WebApi, extraOptions) => {
   const rawBaseQuery = fetchBaseQuery({
-    // baseUrl: "https://admin-api.giedu.in",
+    baseUrl: "http://13.233.68.30/",
     headers: {
-      baseUrl: "http://127.0.0.1:8000",
+      // baseUrl: "http://127.0.0.1:8000",
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
   });
@@ -24,9 +24,4 @@ export const dynamicBaseQuery = async (args, WebApi, extraOptions) => {
     }
   }
   return result;
-  // if (result?.data.status === 200 || result?.data.status) {
-  //   message.success(result?.data?.message);
-  // } else if (result?.data.status === false) {
-  //   message.error(result?.data?.message);
-  // }
 };
