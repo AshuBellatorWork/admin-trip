@@ -29,6 +29,7 @@ const Dashboard = () => {
   const { data: inquiriesData } = useGetInquiryQuery();
   const { data: categoriesData } = useGetCatQuery();
   const { data: desertInqiryData } = useGetDesertExtremeInquiryQuery();
+  console.log(packagesData, "package data");
   // Log packagesData using useEffect to avoid re-render issues
   useEffect(() => {
     if (packagesData) {
