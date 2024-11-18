@@ -27,18 +27,17 @@ let geekblue = "geekblue";
 let redTag = "red";
 const Packages = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalOpenValue, setModalOpenValue] = useState(0)
-  const [tourPackageData, setTourPackageData] = useState({})
-  const [searchText, setSearchText] = useState("")
+  const [modalOpenValue, setModalOpenValue] = useState(0);
+  const [tourPackageData, setTourPackageData] = useState({});
+  const [searchText, setSearchText] = useState("");
   const [paginationData, setPagination] = useState({
     noOfRecords: 10,
     index: 0,
     // totalPages: 1,
   });
-  const { data,isLoading } = useGetCategoryQuery();
-  const [trigg, { data: categoryDeleteResponse }] = useDeleteTourPackageMutation()
-
-
+  const { data, isLoading } = useGetCategoryQuery();
+  const [trigg, { data: categoryDeleteResponse }] =
+    useDeleteTourPackageMutation();
 
   const Columns = [
     {
@@ -50,10 +49,14 @@ const Packages = () => {
         return (
           String(record.sno).toLowerCase().includes(value.toLowerCase()) ||
           String(record.category).toLowerCase().includes(value.toLowerCase()) ||
-          String(record.packageName).toLowerCase().includes(value.toLowerCase()) ||
-          String(record.packageName.props.children).toLowerCase().includes(value.toLowerCase())
-        )
-      }
+          String(record.packageName)
+            .toLowerCase()
+            .includes(value.toLowerCase()) ||
+          String(record.packageName.props.children)
+            .toLowerCase()
+            .includes(value.toLowerCase())
+        );
+      },
     },
     {
       title: "Image",
@@ -77,54 +80,56 @@ const Packages = () => {
     },
   ];
 
-
   const { data: getTourPackages } = useGetPackagesQuery();
   // console.log(getTourPackages);
 
-  const dataSource = getTourPackages?.data?.map((item, index) => {
-    return {
-      key: item.student_name + item?.phone,
-      sno: index + 1,
-      Images: (
-        <Image
-          width={50}
-          height={50}
-          style={{ borderRadius: "100px" }}
-          src={`${item?.localPath}/${item?.image}`}
-        />
-      ),
-      packageName: (
-        <Link to={`https://tripatours.com/tour-detail/${item?.id}`}>
-          {item.name}
-        </Link>
-      ),
-      category: item.category.name,
-      Action: (
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <Link to={`/itinerary/${item?.id}`}>
-            <Tag color={geekblue} className="cursor-pointor">
-              <FaRoute />
-            </Tag>
-          </Link>
-
+  const dataSource = getTourPackages?.data
+    ?.map((item, index) => {
+      // Safely handle missing or invalid 'item' or its properties
+      return {
+        key: (item?.student_name || "") + (item?.phone || ""), // Safely create key
+        sno: index + 1,
+        Images: (
+          <Image
+            width={50}
+            height={50}
+            style={{ borderRadius: "100px" }}
+            src={`${item?.localPath}/${item?.image}`}
+          />
+        ),
+        packageName: (
           <Link to={`/edit-package-detail/${item?.id}`}>
-            <Tag color={geekblue} className="cursor-pointor ">
-              <FaRegEdit />
-            </Tag>
+            {item?.name || "No Name"} {/* Use a fallback value */}
           </Link>
-          <Tag
-            color={redTag}
-            className="cursor-pointor "
-            onClick={() => {
-              showModal(item, 2);
-            }}
-          >
-            <RiDeleteBinLine />
-          </Tag>
-        </div>
-      ),
-    };
-  });
+        ),
+        category: item?.category?.name || "Unknown Category", // Safely handle missing category
+        Action: (
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <Link to={`/itinerary/${item?.id}`}>
+              <Tag color={geekblue} className="cursor-pointor">
+                <FaRoute />
+              </Tag>
+            </Link>
+
+            <Link to={`/edit-package-detail/${item?.id}`}>
+              <Tag color={geekblue} className="cursor-pointor ">
+                <FaRegEdit />
+              </Tag>
+            </Link>
+            <Tag
+              color={redTag}
+              className="cursor-pointor "
+              onClick={() => {
+                showModal(item, 2);
+              }}
+            >
+              <RiDeleteBinLine />
+            </Tag>
+          </div>
+        ),
+      };
+    })
+    .filter(Boolean); // Remove null or invalid items from the array
 
   useEffect(() => {
     if (data?.totalPages) {
@@ -138,11 +143,11 @@ const Packages = () => {
     setIsModalOpen(false);
   };
   const showModal = (item, val) => {
-    setTourPackageData(item)
-    setModalOpenValue(val)
-    setIsModalOpen(true)
-  }
-  const [triger, { data: deleteData }] = useDeletePackageMutation()
+    setTourPackageData(item);
+    setModalOpenValue(val);
+    setIsModalOpen(true);
+  };
+  const [triger, { data: deleteData }] = useDeletePackageMutation();
   // console.log(deleteData);
   const deletePackage = () => {
     triger({ id: tourPackageData?.id });
@@ -154,69 +159,86 @@ const Packages = () => {
       label: "Add Tour Package",
     },
     {
-      content: <EditTourPackages getCategory={data} handleCancel={handleCancel} data={tourPackageData} fun={""} />,
+      content: (
+        <EditTourPackages
+          getCategory={data}
+          handleCancel={handleCancel}
+          data={tourPackageData}
+          fun={""}
+        />
+      ),
       label: "Edit Tour Package",
     },
     {
       content: <AreYouSure fun={deletePackage} />,
       label: "Are You Sure",
     },
-
   ];
   useEffect(() => {
     if (deleteData?.status || deleteData?.success) {
       message.success("Package deleted successfully.");
-      handleCancel()
+      handleCancel();
     }
-  }, [deleteData])
+  }, [deleteData]);
 
   return (
-
-<>{isLoading?<Loader />:
-
-
-
-    <div>
-      <PrimaryModal
-        setIsModalOpen={setIsModalOpen}
-        isModalOpen={isModalOpen}
-        title={modalComponentObject[modalOpenValue]["label"]}
-        element={modalComponentObject[modalOpenValue]["content"]}
-      />
-      <div className="wrapper">
-        <Link to={"/add-package-detail/"}>
-          <Button   style={{background:"#fe5722",color:"white"}}>Add Packages</Button>
-        </Link>
-        <div className="entries-pagination">
-          <div className="show-entites">
-            <div style={{ paddingLeft: "5px" }}>
-              <label className="d-inline-flex align-items-center">
-                Show&nbsp;
-                <select
-                  className="custom-select-sm"
-                  value={paginationData.noOfRecords}
-
-                >
-                  <option value="100">100</option>
-                  <option value="250">250</option>
-                  <option value="500">500</option>
-                  <option value="1000">1000</option>
-                  <option value="2000">2000</option>
-                </select>
-                &nbsp;entries
-              </label>
+    <>
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <div>
+          <PrimaryModal
+            setIsModalOpen={setIsModalOpen}
+            isModalOpen={isModalOpen}
+            title={modalComponentObject[modalOpenValue]["label"]}
+            element={modalComponentObject[modalOpenValue]["content"]}
+          />
+          <div className="wrapper">
+            <Link to={"/add-package-detail/"}>
+              <Button style={{ background: "#fe5722", color: "white" }}>
+                Add Packages
+              </Button>
+            </Link>
+            <div className="entries-pagination">
+              <div className="show-entites">
+                <div style={{ paddingLeft: "5px" }}>
+                  <label className="d-inline-flex align-items-center">
+                    Show&nbsp;
+                    <select
+                      className="custom-select-sm"
+                      value={paginationData.noOfRecords}
+                    >
+                      <option value="100">100</option>
+                      <option value="250">250</option>
+                      <option value="500">500</option>
+                      <option value="1000">1000</option>
+                      <option value="2000">2000</option>
+                    </select>
+                    &nbsp;entries
+                  </label>
+                </div>
+              </div>
+              <div className="search">
+                <label htmlFor="#" className="search-label">
+                  Search :{" "}
+                </label>
+                <input
+                  type="search"
+                  className="search-bar"
+                  onChange={(e) => setSearchText(e.target.value)}
+                />
+              </div>
             </div>
-          </div>
-          <div className="search">
-            <label htmlFor="#" className="search-label">Search : </label>
-            <input type="search" className="search-bar" onChange={(e) => setSearchText(e.target.value)} />
+            <Table
+              dataSource={dataSource}
+              columns={Columns}
+              pagination={false}
+            />
+            ;
           </div>
         </div>
-        <Table dataSource={dataSource} columns={Columns} pagination={false} />;
-      </div>
-    </div>
-     }
-      </>
+      )}
+    </>
   );
 };
 
