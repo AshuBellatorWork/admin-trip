@@ -7,6 +7,7 @@ import {
 import Loader from "../../components/loader/Loader";
 
 const EnquiryList = () => {
+  
   const [searchText, setSearchText] = useState("");
   const [status, setStatus] = useState();
   const [filter, setFilter] = useState("");
