@@ -14,9 +14,9 @@ const EnquiryList = () => {
   const [trigger] = useUpdateStatusMutation();
 
   const option = [
-    { value: "0", label: "IN PROCESS" },
-    { value: "1", label: "APPROVED" },
-    { value: "2", label: "REJECTED" },
+    { value: "0", label: "IN PROCESS", color: "yellow" },
+    { value: "1", label: "APPROVED", color: "green" },
+    { value: "2", label: "REJECTED", color: "red" },
   ];
 
   const option2 = [
@@ -81,8 +81,11 @@ const EnquiryList = () => {
       message: item?.message,
       Action: (
         <Select
-          options={option}
-          value={checkStatus[item?.status]}
+          options={option.map((opt) => ({
+            label: <span style={{ color: opt.color }}>{opt.label}</span>,
+            value: opt.value, // Using the status code here (0, 1, 2)
+          }))}
+          value={String(item?.status)} // Ensure the value is a string (e.g., '0', '1', '2')
           style={{ width: "120px" }}
           onChange={(e) => setStatus({ value: e, id: item?._id })}
         />

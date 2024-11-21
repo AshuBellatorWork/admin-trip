@@ -34,31 +34,20 @@ export const Columns = [
     dataIndex: "peopleInfo",
     key: "peopleInfo",
     },
-    // {
-      //   title: "Check In",
-      //   dataIndex: "createdAt",
-      //   key: "createdAt",
-      //   },
-      //   {
-        //     title: "Check Out",
-        //     dataIndex: "updatedAt",
-        //     key: "updatedAt",
-        //     },
-        
    
-        {
-          title: "Message",
-          dataIndex: "message",
-          key: "message",
-          },
-            {
-              title: "Status",
-              dataIndex: "status",
-              key: "status",
-              },
-      {
-        title: "Action",
-        dataIndex: "Action",
-        key: "Action",
-      },
+  {
+    title: "Message",
+    dataIndex: "message",
+    key: "message",
+    },
+  {
+    title: "Status",
+    dataIndex: "status",
+    key: "status",
+  },
+  {
+    title: "Action",
+    dataIndex: "Action",
+    key: "Action",
+  },
 ];
