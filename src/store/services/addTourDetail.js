@@ -1,10 +1,5 @@
-// 
-
-
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { dynamicBaseQuery } from "./BadRequestHandler/BadRequestHandler";
-
-
 
 export const packageDetail = createApi({
   reducerPath: "packageDetail",
