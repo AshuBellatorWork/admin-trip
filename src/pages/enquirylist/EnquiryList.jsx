@@ -5,9 +5,9 @@ import {
   useUpdateStatusMutation,
 } from "../../store/services/inquiry";
 import Loader from "../../components/loader/Loader";
-
+// kmfkvggf
 const EnquiryList = () => {
-  
+
   const [searchText, setSearchText] = useState("");
   const [status, setStatus] = useState();
   const [filter, setFilter] = useState("");
